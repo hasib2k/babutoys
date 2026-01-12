@@ -1,0 +1,110 @@
+.timerHeading {
+  text-align: left;
+  margin-bottom: 12px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+.timerWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 16px;
+  margin: 0 0 0 0;
+  background: rgba(255,255,255,0.15);
+  border-radius: 16px;
+  padding: 14px 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  backdrop-filter: blur(5px);
+  width: fit-content;
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 30px 0;
+}
+
+.timeBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255,255,255,0.95);
+  border-radius: 10px;
+  padding: 10px 14px;
+  min-width: 60px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.timeValue {
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #ff6b35;
+  margin-bottom: 2px;
+  line-height: 1.1;
+}
+
+.timeLabel {
+  font-size: 1rem;
+  color: #ff6b35;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.separator {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #000000;
+}
+
+@media (max-width: 768px) {
+  .countdown {
+    gap: 10px;
+    margin: 20px 0;
+  }
+  
+  .timeBox {
+    min-width: 60px;
+    padding: 15px 10px;
+  }
+
+  .timeValue {
+    font-size: 2rem;
+  }
+
+  .timeLabel {
+    font-size: 0.9rem;
+  }
+  
+  .separator {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .timerHeading {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  .timerWrapper {
+    gap: 8px;
+    padding: 8px 12px;
+    margin-bottom: 0;
+    max-width: 100%;
+  }
+  .timeBox {
+    min-width: 45px;
+    padding: 8px 10px;
+  }
+  .timeValue {
+    font-size: 1.3rem;
+  }
+  .timeLabel {
+    font-size: 0.7rem;
+  }
+}

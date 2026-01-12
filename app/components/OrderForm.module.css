@@ -1,0 +1,293 @@
+.orderForm {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.productSummary {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 0;
+  height: fit-content;
+  border: 2px solid #000000;
+}
+
+.productHeader {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  align-items: center;
+}
+
+.productThumb {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 0;
+  background: #f5f5f5;
+  border: 2px solid #000000;
+  padding: 5px;
+}
+
+.productHeader h3 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+  line-height: 1.3;
+}
+
+.price {
+  color: #000000;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.quantitySelector {
+  margin: 20px 0;
+}
+
+.quantitySelector label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.quantityBtn {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #000000;
+  background: #ffffff;
+  color: #000000;
+  font-size: 1.5rem;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quantityBtn:hover:not(:disabled) {
+  background: #000000;
+  color: #ffffff;
+}
+
+.quantityBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.quantityValue {
+  font-size: 1.3rem;
+  font-weight: bold;
+  min-width: 30px;
+  text-align: center;
+  color: #000000;
+}
+
+.priceBreakdown {
+  border-top: 2px solid #000000;
+  padding-top: 20px;
+  margin-top: 20px;
+}
+
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  font-size: 1.1rem;
+  color: #000000;
+}
+
+.totalRow {
+  border-top: 2px solid #000000;
+  padding-top: 15px;
+  margin-top: 15px;
+  font-weight: bold;
+  font-size: 1.4rem;
+  color: #000000;
+}
+
+.form {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 0;
+  border: 2px solid #000000;
+}
+
+.form h3 {
+  margin-bottom: 25px;
+  color: #000000;
+  font-weight: bold;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.inputError {
+  border-color: #ff0000 !important;
+  border-width: 2px !important;
+}
+
+.errorText {
+  display: block;
+  color: #ff0000;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  font-weight: 600;
+}
+
+.maxNote {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #666666;
+}
+
+.paymentMethod {
+  margin: 25px 0;
+}
+
+.paymentMethod h4 {
+  margin-bottom: 15px;
+  color: #000000;
+  font-weight: bold;
+}
+
+.paymentOption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  background: #f5f5f5;
+  border-radius: 0;
+  border: 2px solid #000000;
+}
+
+.paymentOption input[type="radio"] {
+  width: auto;
+  margin: 0;
+}
+
+.paymentOption label {
+  margin: 0;
+  cursor: pointer;
+  color: #000000;
+  font-weight: 600;
+}
+
+.note {
+  text-align: center;
+  color: #333333;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.successMessage {
+  text-align: center;
+  padding: 60px 20px;
+  background: #ffffff;
+  border-radius: 0;
+  border: 3px solid #000000;
+}
+
+.successIcon {
+  width: 80px;
+  height: 80px;
+  background: #000000;
+  color: #ffffff;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  margin: 0 auto 20px;
+}
+
+.successMessage h3 {
+  color: #000000;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.successMessage p {
+  margin: 10px 0;
+  font-size: 1rem;
+}
+
+.orderSummary {
+  margin-top: 20px;
+  padding: 20px;
+  background: #f5f5f5;
+  border: 2px solid #000000;
+  text-align: left;
+}
+
+.orderSummary p {
+  margin: 8px 0;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .orderForm {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .productSummary,
+  .form {
+    padding: 20px;
+  }
+  
+  .productThumb {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .productHeader h3 {
+    font-size: 1rem;
+  }
+  
+  .price {
+    font-size: 1.3rem;
+  }
+  
+  .quantityBtn {
+    width: 36px;
+    height: 36px;
+    font-size: 1.3rem;
+  }
+  
+  .priceRow {
+    font-size: 1rem;
+  }
+  
+  .totalRow {
+    font-size: 1.2rem;
+  }
+  
+  .successMessage {
+    padding: 40px 20px;
+  }
+  
+  .successIcon {
+    width: 60px;
+    height: 60px;
+    font-size: 2.5rem;
+  }
+}

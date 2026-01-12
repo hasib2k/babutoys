@@ -1,0 +1,52 @@
+<svg width="600" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Main orange -->
+  <defs>
+    <radialGradient id="orangeGrad1" cx="40%" cy="40%">
+      <stop offset="0%" style="stop-color:#ffb347;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ff8c42;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff7b2e;stop-opacity:1" />
+    </radialGradient>
+    <radialGradient id="leafGrad" cx="30%" cy="30%">
+      <stop offset="0%" style="stop-color:#7cb342;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#558b2f;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Shadow -->
+  <ellipse cx="300" cy="550" rx="150" ry="30" fill="#000000" opacity="0.1"/>
+  
+  <!-- Main orange body -->
+  <circle cx="300" cy="300" r="180" fill="url(#orangeGrad1)"/>
+  
+  <!-- Orange texture dots -->
+  <circle cx="250" cy="260" r="3" fill="#ff7b2e" opacity="0.4"/>
+  <circle cx="280" cy="240" r="2" fill="#ff7b2e" opacity="0.4"/>
+  <circle cx="310" cy="250" r="2.5" fill="#ff7b2e" opacity="0.4"/>
+  <circle cx="340" cy="270" r="3" fill="#ff7b2e" opacity="0.4"/>
+  <circle cx="360" cy="300" r="2" fill="#ff7b2e" opacity="0.4"/>
+  <circle cx="350" cy="330" r="2.5" fill="#ff7b2e" opacity="0.4"/>
+  <circle cx="320" cy="350" r="3" fill="#ff7b2e" opacity="0.4"/>
+  <circle cx="280" cy="360" r="2" fill="#ff7b2e" opacity="0.4"/>
+  <circle cx="250" cy="340" r="2.5" fill="#ff7b2e" opacity="0.4"/>
+  <circle cx="230" cy="310" r="3" fill="#ff7b2e" opacity="0.4"/>
+  <circle cx="240" cy="290" r="2" fill="#ff7b2e" opacity="0.4"/>
+  <circle cx="270" cy="300" r="2.5" fill="#ff7b2e" opacity="0.4"/>
+  <circle cx="300" cy="280" r="2" fill="#ff7b2e" opacity="0.4"/>
+  <circle cx="330" cy="290" r="2.5" fill="#ff7b2e" opacity="0.4"/>
+  <circle cx="310" cy="320" r="2" fill="#ff7b2e" opacity="0.4"/>
+  
+  <!-- Stem -->
+  <rect x="295" y="110" width="10" height="20" fill="#8b6f47" rx="2"/>
+  
+  <!-- Leaves -->
+  <ellipse cx="280" cy="125" rx="25" ry="15" fill="url(#leafGrad)" transform="rotate(-30 280 125)"/>
+  <ellipse cx="320" cy="125" rx="25" ry="15" fill="url(#leafGrad)" transform="rotate(30 320 125)"/>
+  
+  <!-- Leaf veins -->
+  <line x1="270" y1="125" x2="290" y2="125" stroke="#558b2f" stroke-width="1" opacity="0.6"/>
+  <line x1="310" y1="125" x2="330" y2="125" stroke="#558b2f" stroke-width="1" opacity="0.6"/>
+  
+  <!-- Highlight -->
+  <ellipse cx="240" cy="240" rx="50" ry="60" fill="#ffffff" opacity="0.3"/>
+  <ellipse cx="230" cy="230" rx="30" ry="35" fill="#ffffff" opacity="0.4"/>
+</svg>

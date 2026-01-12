@@ -1,0 +1,67 @@
+<svg width="800" height="800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5f5f5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="800" fill="url(#bg)"/>
+  
+  <!-- Massage Gun -->
+  <g transform="translate(200, 150)">
+    <!-- Handle -->
+    <rect x="150" y="200" width="80" height="250" rx="10" fill="#000000"/>
+    <rect x="160" y="210" width="60" height="230" rx="8" fill="#333333"/>
+    
+    <!-- Body -->
+    <ellipse cx="190" cy="180" rx="70" ry="90" fill="#000000"/>
+    <ellipse cx="190" cy="180" rx="60" ry="80" fill="#1a1a1a"/>
+    
+    <!-- Head -->
+    <circle cx="190" cy="80" r="45" fill="#000000"/>
+    <circle cx="190" cy="80" r="35" fill="#333333"/>
+    <circle cx="190" cy="80" r="20" fill="#666666"/>
+    
+    <!-- Button -->
+    <circle cx="190" cy="190" r="12" fill="#ffffff"/>
+  </g>
+  
+  <!-- Hot Water Bag -->
+  <g transform="translate(50, 480)">
+    <rect x="50" y="50" width="180" height="140" rx="15" fill="#000000"/>
+    <rect x="60" y="60" width="160" height="120" rx="12" fill="#1a1a1a"/>
+    
+    <!-- Cap -->
+    <rect x="110" y="30" width="60" height="30" rx="5" fill="#000000"/>
+    <circle cx="140" cy="45" r="8" fill="#666666"/>
+    
+    <!-- Pattern -->
+    <circle cx="140" cy="120" r="40" fill="#333333" opacity="0.3"/>
+  </g>
+  
+  <!-- EMS Mini Massager -->
+  <g transform="translate(450, 480)">
+    <ellipse cx="100" cy="100" rx="90" ry="100" fill="#000000"/>
+    <ellipse cx="100" cy="100" rx="75" ry="85" fill="#1a1a1a"/>
+    
+    <!-- Electrodes -->
+    <circle cx="100" cy="80" r="25" fill="#333333"/>
+    <circle cx="70" cy="120" r="20" fill="#333333"/>
+    <circle cx="130" cy="120" r="20" fill="#333333"/>
+    
+    <!-- Control -->
+    <rect x="85" y="160" width="30" height="15" rx="3" fill="#000000"/>
+    <circle cx="95" cy="167" r="3" fill="#ffffff"/>
+    <circle cx="105" cy="167" r="3" fill="#ffffff"/>
+  </g>
+  
+  <!-- Title -->
+  <text x="400" y="700" font-family="Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#000000">
+    Therapy Combo Package
+  </text>
+  <text x="400" y="740" font-family="Arial, sans-serif" font-size="20" text-anchor="middle" fill="#333333">
+    3-in-1 Complete Set
+  </text>
+</svg>

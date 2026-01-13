@@ -163,19 +163,23 @@ export default function ProductDetail() {
       {/* Marquee Section - Top of Page */}
       <div className={styles.marqueeWrapper}>
         <div className={styles.marqueeTrack}>
-          <span className={styles.marqueeText}>আজ অর্ডারে সারাদেশে ফ্রি ডেলিভারি ফ্রি ডেলিভারি</span>
-          <span className={styles.marqueeText}>আজ অর্ডারে সারাদেশে ফ্রি ডেলিভারি ফ্রি ডেলিভারি</span>
-          <span className={styles.marqueeText}>আজ অর্ডারে সারাদেশে ফ্রি ডেলিভারি ফ্রি ডেলিভারি</span>
+          <span className={styles.marqueeText}>আজ অর্ডারে সারাদেশে ফ্রি ডেলিভারি  ||</span>
+          <span className={styles.marqueeText}>আজ অর্ডারে সারাদেশে ফ্রি ডেলিভারি  ||</span>
+          <span className={styles.marqueeText}>আজ অর্ডারে সারাদেশে ফ্রি ডেলিভারি  ||</span>
         </div>
       </div>
-
       {/* Static Text Section under Carousel */}
-      <div className={styles.staticTextSection}>
-        সোনামণিদের বাংলা ইংরেজি শেখার লার্নিং এন্ড প্লেয়িং টয়
+        <div className={styles.staticTextSectionVideo}>
+        <div className={styles.mobileCarouselWrapper}>
+          {/* Carousel slides (add more if needed) */}
+          <div className={styles.mobileCarouselSlide}>
+            <span className={styles.responsiveSmallText}>
+
+      সোনামণিদের বাংলা ইংরেজি শেখার লার্নিং এন্ড প্লেয়িং টয়
+        </span>
       </div>
-
-      {/* Hero Section (no image) */}
-
+    </div>
+      </div>
       {/* YouTube Video Preview Section */}
       <div className={styles.videoPreviewSection}>
         <iframe
@@ -189,9 +193,16 @@ export default function ProductDetail() {
         ></iframe>
       </div>
 
-      {/* Static Text Section under Video */}
+      {/* Static Text Section under Video - Carousel for Mobile */}
       <div className={styles.staticTextSectionVideo}>
-        এই লার্নিং টয় দিয়ে শিশুরা যেমন খেলতে পারবে ঠিক তেমনি আনন্দের সাথে শিখতেও পারবে
+        <div className={styles.mobileCarouselWrapper}>
+          {/* Carousel slides (add more if needed) */}
+          <div className={styles.mobileCarouselSlide}>
+            <span className={styles.responsiveSmallText}>
+              এই লার্নিং টয় দিয়ে শিশুরা যেমন খেলতে পারবে ঠিক তেমনি আনন্দের সাথে শিখতেও পারবে
+            </span>
+          </div>
+        </div>
       </div>
 
       <div className={styles.container}>
@@ -374,7 +385,10 @@ export default function ProductDetail() {
       {/* অভিভাবকদের মতামত - Info Box and YouTube Preview Section (below reviews) */}
       {activeTab === 'rating' && (
         <>
-          <h3 className={styles.staticTextSection}>অভিভাবকদের মতামত</h3>
+        <div className={styles.staticTextSectionVideo}>
+          {/* Carousel slides (add more if needed) */}
+          <h3 className={styles.responsiveSmallText}>অভিভাবকদের মতামত</h3>
+        </div>
           <div className={styles.guardianReviewSection}>
             <p>
               শিশুরা অনুকরন প্রিয়, আপনি যা করবেন তারা তাই করবে, যা বলবেন তাই বলার চেস্টা করবে, আর যা শিখাবেন তাই শিখবে। তাই আপনার সোনামণিকে স্মার্ট এবং মেধাবী হতে এই শিখনীয় খেলনা তুলে দিন। অর্ডার কনফার্ম করতে নিচের তথ্য সম্পূর্ণ করে অর্ডার করুণ।

@@ -142,15 +142,15 @@ export default function OrderForm() {
     <div className={styles.orderForm}>
       <div className={styles.productSummary}>
         <div className={styles.productHeader}>
-          <img src="/product-main.svg" alt="Product" className={styles.productThumb} />
+          <img src="/product-main.svg" alt="প্রোডাক্ট" className={styles.productThumb} />
           <div>
-            <h3>(Combo) Relax Massage Gun + EMS Mini Massager + Hot Water Bag</h3>
+            <h3>(কম্বো) রিল্যাক্স ম্যাসাজ গান + ইএমএস মিনি ম্যাসাজার + হট ওয়াটার ব্যাগ</h3>
             <p className={styles.price}>৳{productPrice}</p>
           </div>
         </div>
 
         <div className={styles.quantitySelector}>
-          <label>পরিমাণ (Quantity)</label>
+          <label>পরিমাণ</label>
           <div className={styles.quantityControls}>
             <button 
               type="button" 
@@ -175,22 +175,22 @@ export default function OrderForm() {
 
         <div className={styles.priceBreakdown}>
           <div className={styles.priceRow}>
-            <span>Subtotal ({formData.quantity} পিস)</span>
+            <span>সাবটোটাল ({formData.quantity} পিস)</span>
             <span>৳{subtotal}</span>
           </div>
           <div className={styles.priceRow}>
-            <span>Shipping</span>
+            <span>শিপিং</span>
             <span>৳{shippingCost}</span>
           </div>
           <div className={styles.totalRow}>
-            <span>Total</span>
+            <span>মোট</span>
             <span>৳{total}</span>
           </div>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className={styles.form}>
-        <h3>Billing Details</h3>
+        <h3>বিলিং তথ্য</h3>
         
         <div className={styles.formGroup}>
           <label htmlFor="name">নাম *</label>
@@ -236,10 +236,10 @@ export default function OrderForm() {
         </div>
 
         <div className={styles.paymentMethod}>
-          <h4>Select a payment type</h4>
+          <h4>পেমেন্ট পদ্ধতি নির্বাচন করুন</h4>
           <div className={styles.paymentOption}>
             <input type="radio" id="cod" name="payment" defaultChecked />
-            <label htmlFor="cod">💵 Cash on delivery</label>
+            <label htmlFor="cod">💵 ক্যাশ অন ডেলিভারি</label>
           </div>
         </div>
 
@@ -248,11 +248,11 @@ export default function OrderForm() {
           className="btn btn-large"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'প্রসেসিং...' : '🛒 Order Now'}
+          {isSubmitting ? 'প্রসেসিং...' : '🛒 অর্ডার করুন'}
         </button>
 
         <p className={styles.note}>
-          আমরা ক্যাশ অন ডেলিভারি সিস্টেম এ কাজ করি। পণ্য হাতে পেয়ে টাকা পরিশোধ করুন।
+          আমরা ক্যাশ অন ডেলিভারি সিস্টেমে কাজ করি। পণ্য হাতে পেয়ে টাকা পরিশোধ করুন।
         </p>
       </form>
     </div>

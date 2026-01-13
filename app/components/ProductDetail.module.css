@@ -1,7 +1,173 @@
+/* Device For Whom Section (custom grid, mobile responsive) */
+.deviceForSection {
+  margin: 48px auto 32px auto;
+  max-width: 1200px;
+  padding: 0 12px;
+}
+
+.deviceForHeadline {
+  color: #b30000;
+  font-size: 2.2rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 32px;
+  letter-spacing: 0.5px;
+}
+
+.deviceForGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px 24px;
+  justify-items: center;
+}
+
+.deviceForItem {
+  background: #fff;
+  border: 2px solid #ffb3b3;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(255, 0, 0, 0.06);
+  padding: 24px 18px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 180px;
+  transition: box-shadow 0.2s, border 0.2s;
+}
+.deviceForItem img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  margin-bottom: 18px;
+}
+.deviceForItem div {
+  font-size: 1.15rem;
+  color: #b30000;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.deviceForItem:hover {
+  box-shadow: 0 6px 24px rgba(255, 0, 0, 0.12);
+  border-color: #ff6b35;
+}
+
+@media (max-width: 900px) {
+  .deviceForGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .deviceForGrid {
+    grid-template-columns: 1fr;
+  }
+  .deviceForHeadline {
+    font-size: 1.3rem;
+    margin-bottom: 18px;
+  }
+  .deviceForItem {
+    padding: 16px 8px 12px 8px;
+    min-height: 120px;
+  }
+  .deviceForItem img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+  }
+  .deviceForItem div {
+    font-size: 1rem;
+  }
+}
+/* Product Info */
+.guardianReviewSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  text-align: center;
+}
+
+/* Static text section under video with black text */
+.staticTextSectionVideo {
+  width: 100vw;
+  min-width: 100vw;
+  background: #32d8f5;
+  color: #111;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 10px 0 12px 0;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  margin-bottom: 0;
+}
+/* YouTube video preview section */
+.videoPreviewSection {
+  width: 100vw;
+  min-width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  padding: 32px 0 16px 0;
+}
+/* Static text section under carousel */
+.staticTextSection {
+  width: 100vw;
+  min-width: 100vw;
+  background: #a30000;
+  color: #fff;
+  font-size: 2.1rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 10px 0 10px 0;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  animation: carousel-scroll 18s linear infinite;
+  align-items: center;
+}
+/* Marquee styles for hero section */
+.marqueeWrapper {
+  width: 100vw;
+  min-width: 100vw;
+  overflow: hidden;
+  position: relative;
+  height: 56px;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, #201b03 0%, #d87c20 100%);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.marqueeText {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 2.1rem;
+  font-weight: 900;
+  color: #fff;
+  margin-right: 4vw;
+  letter-spacing: 1.5px;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.25);
+}
+
+@keyframes carousel-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.33%);
+  }
+}
 .wrapper {
-  width: 100%;
+  width: 100vw;
+  min-width: 100vw;
   background: linear-gradient(135deg, #fff5f0 0%, #ffe8d9 100%);
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* Hero Section */
@@ -59,7 +225,7 @@
   line-height: 1.2;
   margin: 0 0 28px 0;
   text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-  letter-spacing: -1px;
+  letter-spacing: -0.21px;
   white-space: normal;
   max-width: 100%;
 }
@@ -69,10 +235,10 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 18px 40px;
-  background: #ffffff;
-  color: #ff6b35;
-  border: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    justify-items: center;
   border-radius: 50px;
   font-size: 1.2rem;
   font-weight: 700;
@@ -982,6 +1148,26 @@
 .orderSummary p {
   margin: 8px 0;
   color: #1a1a1a;
+}
+
+/* অভিভাবকদের মতামত ভিডিও গ্রিড */
+.parentReviewVideosGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  justify-items: center;
+}
+
+@media (max-width: 900px) {
+  .parentReviewVideosGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .parentReviewVideosGrid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Responsive */

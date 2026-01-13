@@ -1,13 +1,14 @@
-'use client';
+
+"use client";
 
 import { useState, useRef } from 'react';
 import styles from './ProductDetail.module.css';
-import CountdownTimer from './CountdownTimer';
+
 
 export default function ProductDetail() {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [selectedWeight, setSelectedWeight] = useState('1 kg');
+  const [selectedWeight, setSelectedWeight] = useState('1 pc');
   const [activeTab, setActiveTab] = useState('rating');
   const orderFormRef = useRef<HTMLDivElement>(null);
   
@@ -38,50 +39,42 @@ export default function ProductDetail() {
   };
 
   const images = [
-    '/orange-main.svg',
-    '/orange-sliced.svg',
-    '/orange-bunch.svg',
-    '/orange-half.svg'
+    '/toy2.jpeg',
+    '/image.png',
+    '/toy3.jpeg',
+    '/toy4.jpeg',
   ];
 
   const reviews = [
     {
-      name: 'Hasib Ahmed',
-      date: '2 months ago',
+      name: 'হাসিব আহমেদ',
+      date: '২ দিন আগে',
       rating: 5,
-      title: 'Premium Fresh and Delicious Oranges',
-      text: 'The oranges are super fresh and juicy! Perfect sweetness and great quality. My family loved them. Will definitely order again. Highly recommend for juice making.',
-      images: ['/orange-main.svg', '/orange-sliced.svg', '/orange-bunch.svg'],
+      title: 'প্রিমিয়াম ফ্রেশ ও লার্নিং টয়',
+      text: 'টয়টি খুবই আকর্ষণীয় এবং শিক্ষামূলক। আমার সন্তান খুব আনন্দ পাচ্ছে এবং নতুন নতুন শব্দ শিখছে। অর্ডার করার পর দ্রুত ডেলিভারি পেয়েছি।',
+      images: ['/image.png'],
       avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
     },
     {
-      name: 'Toriqul Islam Tushar',
-      date: '2 months ago',
+      name: 'তরিকুল ইসলাম তুষার',
+      date: '৩ দিন আগে',
       rating: 5,
-      title: 'Super Fresh Orange',
-      text: 'Really good quality oranges. They were fresh and sweet. Good for making juice. Delivery was on time. Price is reasonable for the quality you get.',
+      title: 'শিশুদের জন্য পারফেক্ট',
+      text: 'শিশুরা খেলতে খেলতে বাংলা ও ইংরেজি শিখছে। টয়টি খুবই টেকসই এবং সহজে ব্যবহারযোগ্য।',
       avatar: 'https://randomuser.me/api/portraits/men/45.jpg'
     },
     {
-      name: 'Rashed Khan',
-      date: '3 months ago',
+      name: 'রাশেদ খান',
+      date: '৩ দিন আগে',
       rating: 5,
-      title: 'Best Quality Oranges',
-      text: 'Excellent oranges! Very fresh and tasty. The vitamin C content is great. My kids love eating these. Fast delivery and good packaging. Will order again soon.',
+      title: 'সেরা মানের লার্নিং টয়',
+      text: 'আমার সন্তান এখন মোবাইল ছাড়া খেলতে ও শিখতে পারছে। শিক্ষার জন্য খুবই কার্যকর।',
       avatar: 'https://randomuser.me/api/portraits/men/67.jpg'
     },
-    {
-      name: 'Sahed Rahman',
-      date: '3 months ago',
-      rating: 4,
-      title: 'Amazing Fresh Orange',
-      text: 'Perfect oranges! Sweet, juicy and fresh. Great for daily vitamin C intake. Highly satisfied with the purchase.',
-      avatar: 'https://randomuser.me/api/portraits/men/12.jpg'
-    }
   ];
 
-  const productPrice = 490;
-  const originalPrice = 600;
+  const productPrice = 990;
+  const originalPrice = 1180;
 
   const handleQuantityChange = (delta: number) => {
     setQuantity(Math.max(1, Math.min(10, quantity + delta)));
@@ -131,18 +124,17 @@ export default function ProductDetail() {
       return;
     }
 
-    // Create WhatsApp message with order details
+    // Create WhatsApp message with order details (Bangla)
     const totalAmount = (productPrice * quantity).toFixed(2);
-    const message = `*New Order Details:*%0A%0A` +
-      `*Product:* Fresh Premium Oranges%0A` +
-      `*Weight:* ${selectedWeight}%0A` +
-      `*Quantity:* ${quantity}%0A` +
-      `*Total Amount:* ৳${totalAmount}%0A%0A` +
-      `*Customer Details:*%0A` +
-      `*Name:* ${formData.name}%0A` +
-      `*Phone:* ${formData.phone}%0A` +
-      `*Address:* ${formData.address}%0A%0A` +
-      `I want to place this order. Please confirm.`;
+    const message = `*নতুন অর্ডার ডিটেইলস:*%0A%0A` +
+      `*পণ্য:* সোনামণিদের বাংলা ইংরেজি শেখার লার্নিং এন্ড প্লেয়িং টয়%0A` +
+      `*পরিমাণ:* ${quantity}%0A` +
+      `*মোট মূল্য:* ৳${totalAmount}%0A%0A` +
+      `*কাস্টমার তথ্য:*%0A` +
+      `*নাম:* ${formData.name}%0A` +
+      `*ফোন:* ${formData.phone}%0A` +
+      `*ঠিকানা:* ${formData.address}%0A%0A` +
+      `আমি এই অর্ডারটি কনফার্ম করতে চাই। দয়া করে নিশ্চিত করুন।`;
 
     // Redirect to WhatsApp
     const whatsappURL = `https://wa.me/8801870451231?text=${message}`;
@@ -168,19 +160,39 @@ export default function ProductDetail() {
 
   return (
     <div className={styles.wrapper}>
-      {/* Hero Section */}
-      <section className={styles.hero}>
-        <div className={styles.heroOverlay}></div>
-        <div className={styles.heroContent}>
-          <h1 className={styles.heroTitle}>
-            Unlock Your Best Self – Naturally!
-          </h1>
-          <CountdownTimer />
-          <button className={styles.heroBtn} onClick={scrollToOrder}>
-            Order Now
-          </button>
+      {/* Marquee Section - Top of Page */}
+      <div className={styles.marqueeWrapper}>
+        <div className={styles.marqueeTrack}>
+          <span className={styles.marqueeText}>আজ অর্ডারে সারাদেশে ফ্রি ডেলিভারি ফ্রি ডেলিভারি</span>
+          <span className={styles.marqueeText}>আজ অর্ডারে সারাদেশে ফ্রি ডেলিভারি ফ্রি ডেলিভারি</span>
+          <span className={styles.marqueeText}>আজ অর্ডারে সারাদেশে ফ্রি ডেলিভারি ফ্রি ডেলিভারি</span>
         </div>
-      </section>
+      </div>
+
+      {/* Static Text Section under Carousel */}
+      <div className={styles.staticTextSection}>
+        সোনামণিদের বাংলা ইংরেজি শেখার লার্নিং এন্ড প্লেয়িং টয়
+      </div>
+
+      {/* Hero Section (no image) */}
+
+      {/* YouTube Video Preview Section */}
+      <div className={styles.videoPreviewSection}>
+        <iframe
+          width="680"
+          height="470"
+          src="https://www.youtube.com/embed/uDG1KTx2yu8"
+          title="YouTube video preview"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
+      </div>
+
+      {/* Static Text Section under Video */}
+      <div className={styles.staticTextSectionVideo}>
+        এই লার্নিং টয় দিয়ে শিশুরা যেমন খেলতে পারবে ঠিক তেমনি আনন্দের সাথে শিখতেও পারবে
+      </div>
 
       <div className={styles.container}>
         {/* Product Detail Section */}
@@ -188,7 +200,7 @@ export default function ProductDetail() {
           {/* Image Gallery */}
           <div className={styles.imageGallery}>
             <div className={styles.mainImage}>
-              <img src={images[selectedImage]} alt="Product" />
+              <img src={images[selectedImage]} alt="লার্নিং টয়" />
             </div>
             <div className={styles.thumbnails}>
               {images.map((img, idx) => (
@@ -197,7 +209,7 @@ export default function ProductDetail() {
                   className={`${styles.thumbnail} ${selectedImage === idx ? styles.active : ''}`}
                   onClick={() => setSelectedImage(idx)}
                 >
-                  <img src={img} alt={`Thumbnail ${idx + 1}`} />
+                  <img src={img} alt={`থাম্বনেইল ${idx + 1}`} />
                 </div>
               ))}
             </div>
@@ -205,63 +217,47 @@ export default function ProductDetail() {
 
           {/* Product Info */}
           <div className={styles.productInfo}>
-            <div className={styles.badge}>In Stock</div>
-            <h1 className={styles.productTitle}>Fresh Premium Oranges</h1>
+            <div className={styles.badge}>স্টকে আছে</div>
+            <h1 className={styles.productTitle}>সোনামণিদের বাংলা ইংরেজি শেখার লার্নিং এন্ড প্লেয়িং টয়</h1>
             
             <div className={styles.priceSection}>
               <span className={styles.currentPrice}>৳{productPrice.toFixed(2)}</span>
               <span className={styles.originalPrice}>৳{originalPrice.toFixed(2)}</span>
-              <span className={styles.discount}>18.33% Off</span>
+              <span className={styles.discount}>১৬.১% ছাড়</span>
             </div>
 
             <div className={styles.ratingInfo}>
               <div className={styles.stars}>
                 {'⭐'.repeat(5)}
               </div>
-              <span className={styles.reviewCount}>32 Review</span>
+              <span className={styles.reviewCount}>৩২টি রিভিউ</span>
             </div>
 
-            <p className={styles.description}>
-              Fresh, juicy premium oranges directly from the farm. Rich in Vitamin C,
-              perfect for juice or eating fresh. Sweet and tangy flavor guaranteed.
-            </p>
-
-            {/* Weight Selection */}
-            <div className={styles.weightSection}>
-              <label>Weight:</label>
-              <div className={styles.weightOptions}>
-                {['1 kg', '2 kg', '5 kg'].map((weight) => (
-                  <button
-                    key={weight}
-                    className={`${styles.weightBtn} ${selectedWeight === weight ? styles.active : ''}`}
-                    onClick={() => setSelectedWeight(weight)}
-                  >
-                    {weight}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Quantity & Actions */}
-            <div className={styles.actionSection}>
-              <div className={styles.quantityControl}>
-                <button onClick={() => handleQuantityChange(-1)}>−</button>
-                <span>{quantity}</span>
-                <button onClick={() => handleQuantityChange(1)}>+</button>
-              </div>
+            {/* Product Info - Updated Bangla Content */}
+            <div className={styles.productInfoBox}>
+              <h3>এই ডিভাইস কাদের জন্য?</h3>
+              <ul>
+                <li>যে সকল বাচ্চারা মোবাইল ছাড়া কিছুই বোঝে না তাদের জন্য</li>
+                <li>যে সকল বাচ্চারা মোবাইল ছাড়া খাবার খেতে চায় না</li>
+                <li>যে সকল বাচ্চারা মোবাইল, গেইম এবং টিভি নিয়ে ব্যস্ত থাকে</li>
+                <li>যে সকল বাচ্চারা পড়াশোনা করতে চাই না</li>
+                <li>যে সকল বাচ্চারা দেরিতে কথা বলে তাদের জন্য পারফেক্ট</li>
+              </ul>
               <button className={styles.orderNowBtn} onClick={scrollToOrder}>
-                Order Now
+                ফ্রি ডেলিভারিতে অর্ডার করুন →
               </button>
             </div>
-
-            {/* Additional Info */}
-            <div className={styles.infoList}>
-              <div className={styles.infoItem}>
-                <strong>Category:</strong> <span>Fresh Fruits</span>
-              </div>
-              <div className={styles.infoItem}>
-                <strong>Tag:</strong> <span>Orange Citrus Fresh Vitamin C Healthy Organic Farm Fresh</span>
-              </div>
+            <div className={styles.productInfoBox}>
+              <h3>ডিভাইস টি কেন নিবেন ?</h3>
+              <ul>
+                <li>খেলার ছলে পড়া শিখবে মনোযোগ বাড়বে</li>
+                <li>২২৪ টি বাংলা ও ইংরেজিতে শিখবে ও বলবে</li>
+                <li>বাস্তবিক সবকিছুর সাথে পরিচিত হবে এবং মেধার বিকাশ ঘটবে</li>
+                <li>শিশুরা ৪ ভাবে শিখবে: ছবি দেখে, শব্দ শুনে, কালার দেখে, উচ্চারণ শুনে</li>
+              </ul>
+              <button className={styles.orderNowBtn} onClick={scrollToOrder}>
+                ফ্রি ডেলিভারিতে অর্ডার করুন →
+              </button>
             </div>
           </div>
         </div>
@@ -273,30 +269,31 @@ export default function ProductDetail() {
               className={`${styles.tabHeader} ${activeTab === 'rating' ? styles.active : ''}`}
               onClick={() => setActiveTab('rating')}
             >
-              Rating & Reviews
+              রেটিং ও রিভিউ
             </button>
             <button
               className={`${styles.tabHeader} ${activeTab === 'description' ? styles.active : ''}`}
               onClick={() => setActiveTab('description')}
             >
-              Description
+              বিস্তারিত
             </button>
           </div>
 
+
           {activeTab === 'rating' && (
             <div className={styles.reviewsContent}>
-              {/* Rating Overview */}
+              {/* রেটিং ওভারভিউ */}
               <div className={styles.ratingOverview}>
                 <div className={styles.ratingScore}>
-                  <div className={styles.scoreNumber}>4.5</div>
+                  <div className={styles.scoreNumber}>৪.৫</div>
                   <div className={styles.stars}>{'⭐'.repeat(5)}</div>
-                  <div className={styles.totalReviews}>32 Reviews</div>
+                  <div className={styles.totalReviews}>৩২টি রিভিউ</div>
                 </div>
 
                 <div className={styles.ratingBars}>
                   {[5, 4, 3, 2, 1].map((star) => (
                     <div key={star} className={styles.ratingBar}>
-                      <span>{star} Star</span>
+                      <span>{star} তারকা</span>
                       <div className={styles.barContainer}>
                         <div
                           className={styles.barFill}
@@ -308,11 +305,11 @@ export default function ProductDetail() {
                 </div>
               </div>
 
-              {/* Reviews List */}
+              {/* রিভিউ তালিকা */}
               <div className={styles.reviewsList}>
                 <div className={styles.reviewsHeader}>
-                  <h3>Review List</h3>
-                  <span>Showing 1-4 of 32 results</span>
+                  <h3>রিভিউ তালিকা</h3>
+                  <span>১-৩টি ফলাফল দেখানো হচ্ছে (মোট ৩২টি)</span>
                 </div>
 
                 {reviews.map((review, idx) => (
@@ -338,7 +335,7 @@ export default function ProductDetail() {
                     {review.images && (
                       <div className={styles.reviewImages}>
                         {review.images.map((img, i) => (
-                          <img key={i} src={img} alt={`Review ${i + 1}`} />
+                          <img key={i} src={img} alt={`রিভিউ ${i + 1}`} />
                         ))}
                       </div>
                     )}
@@ -350,35 +347,59 @@ export default function ProductDetail() {
 
           {activeTab === 'description' && (
             <div className={styles.descriptionContent}>
-              <h3>Product Description</h3>
+              <h3>পণ্যের বিবরণ</h3>
               <p>
-                Our premium fresh oranges are carefully selected from the finest farms. Each orange is 
-                hand-picked to ensure maximum sweetness and juiciness. Rich in Vitamin C, these oranges 
-                are perfect for boosting your immune system and maintaining good health.
+                এই লার্নিং এন্ড প্লেয়িং টয়টি শিশুদের জন্য বিশেষভাবে ডিজাইন করা হয়েছে যাতে তারা খেলার ছলে বাংলা ও ইংরেজি অক্ষর, সংখ্যা, শব্দ, ছবি, রঙ, প্রাণী, ফল, সবজি, যানবাহন, পেশা, দেহের অঙ্গ, ছড়া, কুইজ, গান ইত্যাদি শিখতে পারে।
               </p>
               <p>
-                Perfect for fresh juice, fruit salads, or eating as a healthy snack. Our oranges are 
-                naturally sweet with the perfect balance of tanginess. We ensure farm-to-table freshness 
-                with proper storage and quick delivery. Available in 1kg, 2kg, and 5kg packages.
+                এতে রয়েছে ২২৪টি বাংলা ও ইংরেজি শব্দ ও বাক্য, ৪টি শেখার ধাপ (ছবি দেখে, শব্দ শুনে, রঙ দেখে, উচ্চারণ শুনে), এবং আনন্দদায়ক সাউন্ড ও লাইট। শিশুরা খেলতে খেলতে পড়াশোনায় আগ্রহী হবে এবং তাদের মেধার বিকাশ ঘটবে।
               </p>
-              <h4>Benefits:</h4>
+              <h4>বৈশিষ্ট্য ও উপকারিতা:</h4>
               <ul>
-                <li>Rich in Vitamin C - Boosts immunity</li>
-                <li>Natural antioxidants for healthy skin</li>
-                <li>Good source of fiber for digestion</li>
-                <li>Fresh and juicy - Perfect for juice</li>
-                <li>Farm fresh quality guaranteed</li>
+                <li>খেলার ছলে বাংলা ও ইংরেজি শেখা</li>
+                <li>২২৪টি শব্দ ও বাক্য, ৪টি শেখার ধাপ</li>
+                <li>ছবি, শব্দ, রঙ ও উচ্চারণের মাধ্যমে শেখা</li>
+                <li>শিশুর মনোযোগ ও মেধা বৃদ্ধি</li>
+                <li>আকর্ষণীয় ডিজাইন ও টেকসই প্লাস্টিক</li>
+                <li>ব্যাটারি চালিত, সহজে বহনযোগ্য</li>
+                <li>শিশুরা মোবাইল থেকে দূরে থাকবে</li>
+                <li>শিশুর কথা বলা ও চিন্তা শক্তি বাড়াবে</li>
               </ul>
             </div>
           )}
         </div>
       </div>
 
+
+      {/* অভিভাবকদের মতামত - Info Box and YouTube Preview Section (below reviews) */}
+      {activeTab === 'rating' && (
+        <>
+          <h3 className={styles.staticTextSection}>অভিভাবকদের মতামত</h3>
+          <div className={styles.guardianReviewSection}>
+            <p>
+              শিশুরা অনুকরন প্রিয়, আপনি যা করবেন তারা তাই করবে, যা বলবেন তাই বলার চেস্টা করবে, আর যা শিখাবেন তাই শিখবে। তাই আপনার সোনামণিকে স্মার্ট এবং মেধাবী হতে এই শিখনীয় খেলনা তুলে দিন। অর্ডার কনফার্ম করতে নিচের তথ্য সম্পূর্ণ করে অর্ডার করুণ।
+            </p>
+          </div>
+          <div className={styles.parentReviewVideosSection}>
+            <div className={styles.videoPreviewSection}>
+              <div className={styles.parentReviewVideosGrid}>
+              <div className={styles.parentReviewVideo}><iframe width="400" height="320" src="https://youtube.com/embed/uDG1KTx2yu8" title="Parent Review 1" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe></div>
+              <div className={styles.parentReviewVideo}><iframe width="400" height="320" src="https://www.youtube.com/embed/qx0zmgcvt9s" title="Parent Review 2" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe></div>
+              <div className={styles.parentReviewVideo}><iframe width="400" height="320" src="https://www.youtube.com/embed/eSQ4U0bT3cI" title="Parent Review 3" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe></div>
+              <div className={styles.parentReviewVideo}><iframe width="400" height="320" src="https://www.youtube.com/embed/FtuPoia-krs" title="Parent Review 4" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe></div>
+              <div className={styles.parentReviewVideo}><iframe width="400" height="320" src="https://www.youtube.com/embed/IcVYDu_mnx0" title="Parent Review 5" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe></div>
+              <div className={styles.parentReviewVideo}><iframe width="400" height="320" src="https://www.youtube.com/embed/xLFtZtmUzGo" title="Parent Review 6" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe></div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
       {/* Order Form Section */}
       <div className={styles.orderSection} ref={orderFormRef}>
         <div className={styles.orderContainer}>
           <div className={styles.orderImageSection}>
-            <img src="/orange-main.svg" alt="Fresh Premium Oranges" className={styles.orderProductImage} />
+            <img src="/toy4.jpeg" alt="লার্নিং টয়" className={styles.orderProductImage} />
           </div>
           
           <div className={styles.orderFormSection}>
@@ -397,9 +418,9 @@ export default function ProductDetail() {
               </div>
             ) : (
               <>
-                <h2 className={styles.orderFormTitle}>Place Your Order</h2>
+                <h2 className={styles.orderFormTitle}>অর্ডার করুন</h2>
                 <div className={styles.orderProductInfo}>
-                  <h3>Fresh Premium Oranges - {selectedWeight}</h3>
+                  <h3>সোনামণিদের বাংলা ইংরেজি শেখার লার্নিং এন্ড প্লেয়িং টয় - {selectedWeight}</h3>
                   <div className={styles.orderPrice}>
                     <span className={styles.orderCurrentPrice}>৳{productPrice.toFixed(2)}</span>
                     <span className={styles.orderOriginalPrice}>৳{originalPrice.toFixed(2)}</span>
@@ -408,20 +429,20 @@ export default function ProductDetail() {
 
                 <form onSubmit={handleOrderSubmit} className={styles.orderForm}>
                   <div className={styles.formGroup}>
-                    <label>Full Name *</label>
+                    <label>পূর্ণ নাম *</label>
                     <input
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      placeholder="Enter your name"
+                      placeholder="আপনার নাম লিখুন"
                       className={errors.name ? styles.inputError : ''}
                     />
                     {errors.name && <span className={styles.errorText}>{errors.name}</span>}
                   </div>
 
                   <div className={styles.formGroup}>
-                    <label>Phone Number *</label>
+                    <label>মোবাইল নাম্বার *</label>
                     <input
                       type="tel"
                       name="phone"
@@ -435,12 +456,12 @@ export default function ProductDetail() {
                   </div>
 
                   <div className={styles.formGroup}>
-                    <label>Complete Address *</label>
+                    <label>সম্পূর্ণ ঠিকানা *</label>
                     <textarea
                       name="address"
                       value={formData.address}
                       onChange={handleInputChange}
-                      placeholder="House no, Road no, Area, District"
+                      placeholder="বাসা নং, রোড নং, এলাকা, জেলা"
                       rows={4}
                       className={errors.address ? styles.inputError : ''}
                     />
@@ -448,7 +469,7 @@ export default function ProductDetail() {
                   </div>
 
                   <div className={styles.formGroup}>
-                    <label>Quantity</label>
+                    <label>পরিমাণ</label>
                     <div className={styles.quantityControlForm}>
                       <button type="button" onClick={() => handleQuantityChange(-1)}>−</button>
                       <span>{quantity}</span>
@@ -457,16 +478,16 @@ export default function ProductDetail() {
                   </div>
 
                   <div className={styles.orderTotal}>
-                    <span>Total Amount:</span>
+                    <span>মোট:</span>
                     <span className={styles.totalPrice}>৳{(productPrice * quantity).toFixed(2)}</span>
                   </div>
 
                   <button type="submit" className={styles.submitOrderBtn}>
-                    Place Order (Cash on Delivery)
+                    অর্ডার করুন (ক্যাশ অন ডেলিভারি)
                   </button>
 
                   <p className={styles.orderNote}>
-                    🛒 Cash on Delivery available. Pay when you receive the product.
+                    🛒 ক্যাশ অন ডেলিভারি। পণ্য হাতে পেয়ে টাকা পরিশোধ করুন।
                   </p>
                 </form>
               </>

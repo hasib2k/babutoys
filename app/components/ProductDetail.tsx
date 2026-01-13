@@ -74,7 +74,7 @@ export default function ProductDetail() {
   ];
 
   const productPrice = 990;
-  const originalPrice = 1180;
+  const originalPrice = 1650;
 
   const handleQuantityChange = (delta: number) => {
     setQuantity(Math.max(1, Math.min(10, quantity + delta)));
@@ -223,7 +223,7 @@ export default function ProductDetail() {
             <div className={styles.priceSection}>
               <span className={styles.currentPrice}>৳{productPrice.toFixed(2)}</span>
               <span className={styles.originalPrice}>৳{originalPrice.toFixed(2)}</span>
-              <span className={styles.discount}>১৬.১% ছাড়</span>
+              <span className={styles.discount}>৪০% ছাড়</span>
             </div>
 
             <div className={styles.ratingInfo}>

@@ -346,6 +346,61 @@
   display: block;
 }
 
+/* Simple hero carousel above the video */
+.heroCarousel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.carouselMain {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.carouselNav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+}
+.carouselNav:active { transform: translateY(-50%) scale(0.97); }
+.carouselMain .carouselNav:first-of-type { left: 8px; }
+.carouselMain .carouselNav:last-of-type { right: 8px; }
+.carouselThumbs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 6px 4px;
+  max-width: 760px;
+}
+.carouselThumbs img {
+  width: 56px;
+  height: 42px;
+  object-fit: cover;
+  border-radius: 6px;
+  opacity: 0.85;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+.activeThumb {
+  opacity: 1;
+  border-color: #0070f3;
+}
+
 @media (max-width: 1200px) {
   .videoPreviewSection .video-wrapper {
     max-width: 900px;
@@ -1437,6 +1492,36 @@
   margin: 15px 0 0 0;
 }
 
+/* Floating admin login button */
+.adminLoginBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  text-decoration: none;
+  font-size: 20px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+  transition: transform 0.15s, background 0.15s, box-shadow 0.15s;
+  z-index: 60;
+}
+.adminLoginBtn:hover {
+  transform: translateY(-4px);
+  background: #000;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.28);
+}
+
+@media (max-width: 600px) {
+  .adminLoginBtn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+}
+
 .successMessage {
   text-align: center;
   padding: 40px 20px;
@@ -1615,8 +1700,8 @@
     justify-content: center;
   }
   .thumbnail {
-    width: 70px;
-    height: 70px;
+    width: 48px;
+    height: 48px;
   }
   .actionSection {
     flex-direction: column;

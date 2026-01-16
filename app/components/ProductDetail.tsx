@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 type OrderFormData = {
   name: string;
@@ -14,6 +14,7 @@ import styles from './ProductDetail.module.css';
 
 export default function ProductDetail() {
   const [selectedImage, setSelectedImage] = useState(0);
+  const [heroIndex, setHeroIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedWeight, setSelectedWeight] = useState('1 pc');
   const [activeTab, setActiveTab] = useState('rating');
@@ -91,9 +92,22 @@ export default function ProductDetail() {
   };
 
   const images = [
-    '/toy01.jpeg',
+    '/toy07.jpg',
+    '/toy02.jpg',
+    '/toy03.jpg',
+    '/toy04.jpg',
+    '/toy05.jpg',
+
 
   ];
+
+  // auto-advance hero carousel every 3 seconds
+  useEffect(() => {
+    const id = setInterval(() => {
+      setHeroIndex((i) => (i + 1) % images.length);
+    }, 3000);
+    return () => clearInterval(id);
+  }, [images.length]);
 
   const reviews = [
     {
@@ -239,17 +253,30 @@ export default function ProductDetail() {
       </div>
     </div>
       </div>
-      {/* YouTube Video Preview Section */}
+      {/* Video Preview Section (local review1.mp4) with product image carousel */}
       <div className={styles.videoPreviewSection}>
-        <iframe
-          width="680"
-          height="470"
-          src="https://www.youtube.com/embed/uDG1KTx2yu8"
-          title="YouTube video preview"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
+        <div className={styles['video-wrapper']}>
+          <div className={styles.heroCarousel}>
+            <div className={styles.carouselMain}>
+              <button className={styles.carouselNav} onClick={() => setHeroIndex((heroIndex - 1 + images.length) % images.length)}>‹</button>
+              <img src={images[heroIndex]} alt={`product ${heroIndex + 1}`} style={{ maxWidth: '420px', width: '100%', height: 'auto', borderRadius: 12 }} />
+              <button className={styles.carouselNav} onClick={() => setHeroIndex((heroIndex + 1) % images.length)}>›</button>
+            </div>
+            <div className={styles.carouselThumbs}>
+              {images.map((img, i) => (
+                <img
+                  key={i}
+                  src={img}
+                  alt={`thumb ${i + 1}`}
+                  className={i === heroIndex ? styles.activeThumb : ''}
+                  onClick={() => setHeroIndex(i)}
+                />
+              ))}
+            </div>
+
+            <div style={{ height: 18 }} />
+          </div>
+        </div>
       </div>
 
       {/* Static Text Section under Video - Carousel for Mobile */}
@@ -456,12 +483,9 @@ export default function ProductDetail() {
           <div className={styles.parentReviewVideosSection}>
             <div className={styles.videoPreviewSection}>
               <div className={styles.parentReviewVideosGrid}>
-              <div className={styles.parentReviewVideo}><iframe width="400" height="320" src="https://youtube.com/embed/uDG1KTx2yu8" title="Parent Review 1" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe></div>
-              <div className={styles.parentReviewVideo}><iframe width="400" height="320" src="https://www.youtube.com/embed/qx0zmgcvt9s" title="Parent Review 2" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe></div>
-              <div className={styles.parentReviewVideo}><iframe width="400" height="320" src="https://www.youtube.com/embed/eSQ4U0bT3cI" title="Parent Review 3" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe></div>
-              <div className={styles.parentReviewVideo}><iframe width="400" height="320" src="https://www.youtube.com/embed/FtuPoia-krs" title="Parent Review 4" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe></div>
-              <div className={styles.parentReviewVideo}><iframe width="400" height="320" src="https://www.youtube.com/embed/IcVYDu_mnx0" title="Parent Review 5" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe></div>
-              <div className={styles.parentReviewVideo}><iframe width="400" height="320" src="https://www.youtube.com/embed/xLFtZtmUzGo" title="Parent Review 6" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe></div>
+              <div className={styles.parentReviewVideo} style={{ display: 'flex', justifyContent: 'center' }}>
+                <img src={images[heroIndex]} alt="সোনামণি টয়" style={{ maxWidth: '100%', height: 'auto', borderRadius: 12 }} />
+              </div>
               </div>
             </div>
           </div>
@@ -472,7 +496,7 @@ export default function ProductDetail() {
       <div className={styles.orderSection} ref={orderFormRef}>
         <div className={styles.orderContainer}>
           <div className={styles.orderImageSection}>
-            <img src="/toy01.jpeg" alt="লার্নিং টয়" className={styles.orderProductImage} />
+            <img src="/toy07.jpg" alt="লার্নিং টয়" className={styles.orderProductImage} />
           </div>
           
           <div className={styles.orderFormSection}>
@@ -617,6 +641,13 @@ export default function ProductDetail() {
 
       {/* Floating Action Buttons */}
       <div className={styles.floatingButtons}>
+        <a
+          href="/admin/login"
+          className={styles.adminLoginBtn}
+          title="Admin Login"
+        >
+          🔐
+        </a>
         <a 
           href="https://wa.me/8801870451231" 
           target="_blank" 

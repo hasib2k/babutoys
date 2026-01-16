@@ -80,6 +80,41 @@ export async function POST(req: Request) {
       createdAt: formatDateForDisplay(new Date()),
     };
 
+    // If DATABASE_URL is provided, try saving to Prisma DB (Postgres/SQLite). Otherwise fallback to local JSON file.
+    if (process.env.DATABASE_URL) {
+      try {
+        // lazy require so deployments without Prisma client won't crash during build
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const { PrismaClient } = require('@prisma/client');
+        const prisma = new PrismaClient();
+
+        const created = await prisma.order.create({
+          data: {
+            id: String(id),
+            productName: newOrder.productName,
+            price: newOrder.price,
+            quantity: newOrder.quantity,
+            shipping: newOrder.shipping,
+            total: newOrder.total,
+            area: newOrder.area,
+            customerName: newOrder.customerName,
+            phone: newOrder.phone,
+            address: newOrder.address,
+            status: newOrder.status,
+            createdAt: new Date(),
+          },
+        });
+
+        try {
+          await prisma.$disconnect();
+        } catch (e) {}
+
+        return NextResponse.json({ id: created.id, message: 'Order saved to DB' }, { status: 201 });
+      } catch (dbErr) {
+        console.error('Prisma save failed, falling back to file', dbErr);
+      }
+    }
+
     orders.push(newOrder);
     await fs.writeFile(filePath, JSON.stringify(orders, null, 2), 'utf8');
 

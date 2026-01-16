@@ -1,3 +1,169 @@
+/* Parent Review Video Cards */
+.parentReviewVideo {
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+.parentReviewVideo iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
+  height: auto;
+  border-radius: 6px;
+  border: none;
+  background: #000;
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .productSection {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+  .productInfo {
+    gap: 10px;
+    padding: 0 2px;
+  }
+  .badge {
+    font-size: 13px;
+    padding: 3px 8px;
+  }
+  .productTitle {
+    font-size: 1.15rem;
+    line-height: 1.25;
+    margin-bottom: 2px;
+  }
+  .priceSection {
+    gap: 7px;
+  }
+  .currentPrice {
+    font-size: 1.15rem;
+  }
+  .originalPrice {
+    font-size: 0.95rem;
+  }
+  .discount {
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 12px;
+  }
+  .ratingInfo {
+    gap: 7px;
+    padding-bottom: 10px;
+  }
+  .stars {
+    font-size: 15px;
+  }
+  .reviewCount {
+    font-size: 12px;
+  }
+  .productInfoBox {
+    padding: 10px 6px 12px 6px;
+    margin-bottom: 10px;
+  }
+  .productInfoBox h3 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+  .productInfoBox ul {
+    padding-left: 18px;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+  }
+  .orderNowBtn {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 15px;
+    border-radius: 30px;
+  }
+}
+/* Delivery Area Section */
+
+.deliveryAreaOptions {
+  display: flex;
+  gap: 1.2rem;
+  margin-bottom: 0.5rem;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.deliveryAreaLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 12px 26px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f0f8ff 60%, #e6f0fa 100%);
+  font-weight: 700;
+  font-size: 1.08rem;
+  color: #222;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: border 0.2s, background 0.2s, box-shadow 0.2s, color 0.2s;
+  position: relative;
+  min-width: 170px;
+  margin-bottom: 6px;
+}
+.deliveryAreaLabel input[type="radio"] {
+  accent-color: #7f97b3;
+  width: 18px;
+  height: 18px;
+}
+.deliveryAreaLabel:has(input[type="radio"]:checked) {
+  border-color: #00f335;
+  background: linear-gradient(135deg, #e6f0fa 60%, #d0e7ff 100%);
+  color: #f30000;
+  box-shadow: 0 4px 16px rgba(0,112,243,0.10);
+}
+.deliveryAreaLabel:hover,
+.deliveryAreaLabel:focus-within {
+  border-color: #f33100;
+  background: linear-gradient(135deg, #e6f0fa 60%, #d0e7ff 100%);
+  color: #f30000;
+  box-shadow: 0 4px 16px rgba(0,112,243,0.13);
+}
+.deliveryAreaNote {
+  color: #fff;
+  font-size: 1.05rem;
+  margin-bottom: 10px;
+  display: block;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+.deliveryAreaLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 10px 18px;
+  border: 2px solid #000;
+  border-radius: 6px;
+  background: #f0f8ff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border 0.2s, background 0.2s;
+}
+.deliveryAreaLabel input[type="radio"] {
+  accent-color: #f30000;
+}
+.deliveryAreaLabel:has(input[type="radio"]:checked) {
+  border-color: #0070f3;
+  background: #e6f0fa;
+}
+.deliveryAreaNote {
+  color: #fff;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+  display: block;
+}
 /* Mobile-only carousel for static text section under video */
 .mobileCarouselWrapper {
   display: flex;
@@ -122,6 +288,21 @@
   text-align: center;
 }
 
+.guardianReviewSection {
+  padding-top: 8px; /* move content slightly down inside the card */
+}
+
+/* Desktop-only: slightly larger, more readable guardian paragraph */
+@media (min-width: 992px) {
+  .guardianReviewSection p {
+    font-size: 1.18rem;
+    line-height: 1.75;
+    max-width: 980px;
+    margin: 12px auto 0 auto;
+    color: #222;
+  }
+}
+
 /* Static text section under video with black text */
 .staticTextSectionVideo {
   width: 100vw;
@@ -138,13 +319,63 @@
 }
 /* YouTube video preview section */
 .videoPreviewSection {
-  width: 100vw;
-  min-width: 100vw;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #fff5f0;
   padding: 32px 0 16px 0;
+  overflow: visible;
+}
+
+.videoPreviewSection .video-wrapper {
+  width: 100%;
+  max-width: 1100px; /* desktop max width for preview */
+  padding: 0 16px;
+}
+
+.videoPreviewSection iframe {
+  width: 100%;
+  max-width: 1100px;
+  aspect-ratio: 16/9;
+  height: auto;
+  border-radius: 12px;
+  border: none;
+  background: #000;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  display: block;
+}
+
+@media (max-width: 1200px) {
+  .videoPreviewSection .video-wrapper {
+    max-width: 900px;
+  }
+}
+
+@media (max-width: 900px) {
+  .videoPreviewSection .video-wrapper {
+    max-width: 680px;
+    padding: 0 12px;
+  }
+  .videoPreviewSection iframe {
+    aspect-ratio: 16/9;
+    height: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .videoPreviewSection {
+    padding: 12px 0 8px 0;
+  }
+  .videoPreviewSection .video-wrapper {
+    max-width: 98vw;
+    padding: 0 6px;
+  }
+  .videoPreviewSection iframe {
+    width: 100%;
+    min-height: 160px;
+    border-radius: 8px;
+  }
 }
 /* Static text section under carousel */
 .staticTextSection {
@@ -972,7 +1203,7 @@
 }
 
 .orderFormSection {
-  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  background: linear-gradient(135deg, #f87748 0%, #f7931e 100%);
   padding: 40px;
   border-radius: 20px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.1);
@@ -1190,19 +1421,32 @@
 .parentReviewVideosGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  justify-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 16px;
 }
 
 @media (max-width: 900px) {
   .parentReviewVideosGrid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 16px 12px;
+  }
+  .parentReviewVideo {
+    padding: 6px;
   }
 }
 
 @media (max-width: 600px) {
   .parentReviewVideosGrid {
     grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 12px 8px;
+  }
+  .parentReviewVideo {
+    padding: 6px;
   }
 }
 

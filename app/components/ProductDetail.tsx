@@ -2,6 +2,13 @@
 "use client";
 
 import { useState, useRef } from 'react';
+
+type OrderFormData = {
+  name: string;
+  phone: string;
+  address: string;
+  area: 'inside' | 'outside';
+};
 import styles from './ProductDetail.module.css';
 
 
@@ -12,10 +19,11 @@ export default function ProductDetail() {
   const [activeTab, setActiveTab] = useState('rating');
   const orderFormRef = useRef<HTMLDivElement>(null);
   
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<OrderFormData>({
     name: '',
     phone: '',
     address: '',
+    area: 'inside',
   });
 
   const [errors, setErrors] = useState({
@@ -39,10 +47,8 @@ export default function ProductDetail() {
   };
 
   const images = [
-    '/toy2.jpeg',
-    '/image.png',
-    '/toy3.jpeg',
-    '/toy4.jpeg',
+    '/toy01.jpeg',
+
   ];
 
   const reviews = [
@@ -124,11 +130,16 @@ export default function ProductDetail() {
       return;
     }
 
-    // Create WhatsApp message with order details (Bangla)
-    const totalAmount = (productPrice * quantity).toFixed(2);
+    // Compute shipping and total including shipping
+    const shipping = formData.area === 'inside' ? 60 : 120;
+    const totalAmount = (productPrice * quantity + shipping).toFixed(2);
+
+    // Create WhatsApp message with order details (Bangla) including shipping
     const message = `*নতুন অর্ডার ডিটেইলস:*%0A%0A` +
       `*পণ্য:* সোনামণিদের বাংলা ইংরেজি শেখার লার্নিং এন্ড প্লেয়িং টয়%0A` +
+      `*মূল্য:* ৳${productPrice.toFixed(2)}%0A` +
       `*পরিমাণ:* ${quantity}%0A` +
+      `*শিপিং:* ৳${shipping}%0A` +
       `*মোট মূল্য:* ৳${totalAmount}%0A%0A` +
       `*কাস্টমার তথ্য:*%0A` +
       `*নাম:* ${formData.name}%0A` +
@@ -145,7 +156,7 @@ export default function ProductDetail() {
     
     setTimeout(() => {
       setOrderSubmitted(false);
-      setFormData({ name: '', phone: '', address: '' });
+      setFormData({ name: '', phone: '', address: '', area: 'inside' });
     }, 5000);
   };
 
@@ -158,14 +169,18 @@ export default function ProductDetail() {
     }
   };
 
+  // current shipping charge based on selected area
+  const shippingCharge = formData.area === 'inside' ? 60 : 120;
+  const totalWithShipping = productPrice * quantity + shippingCharge;
+
   return (
     <div className={styles.wrapper}>
       {/* Marquee Section - Top of Page */}
       <div className={styles.marqueeWrapper}>
         <div className={styles.marqueeTrack}>
-          <span className={styles.marqueeText}>আজ অর্ডারে সারাদেশে ফ্রি ডেলিভারি  ||</span>
-          <span className={styles.marqueeText}>আজ অর্ডারে সারাদেশে ফ্রি ডেলিভারি  ||</span>
-          <span className={styles.marqueeText}>আজ অর্ডারে সারাদেশে ফ্রি ডেলিভারি  ||</span>
+          <span className={styles.marqueeText}>আজই অর্ডার করুন এবং লুফে নিন আকর্ষণীয় ৪০% ছাড়!  ||</span>
+          <span className={styles.marqueeText}>আজই অর্ডার করুন এবং লুফে নিন আকর্ষণীয় ৪০% ছাড়!  ||</span>
+          <span className={styles.marqueeText}>আজই অর্ডার করুন এবং লুফে নিন আকর্ষণীয় ৪০% ছাড়!  ||</span>
         </div>
       </div>
       {/* Static Text Section under Carousel */}
@@ -255,7 +270,7 @@ export default function ProductDetail() {
                 <li>যে সকল বাচ্চারা দেরিতে কথা বলে তাদের জন্য পারফেক্ট</li>
               </ul>
               <button className={styles.orderNowBtn} onClick={scrollToOrder}>
-                ফ্রি ডেলিভারিতে অর্ডার করুন →
+              অর্ডার করতে ক্লিক করুন  →
               </button>
             </div>
             <div className={styles.productInfoBox}>
@@ -267,7 +282,7 @@ export default function ProductDetail() {
                 <li>শিশুরা ৪ ভাবে শিখবে: ছবি দেখে, শব্দ শুনে, কালার দেখে, উচ্চারণ শুনে</li>
               </ul>
               <button className={styles.orderNowBtn} onClick={scrollToOrder}>
-                ফ্রি ডেলিভারিতে অর্ডার করুন →
+              অর্ডার করতে ক্লিক করুন  →
               </button>
             </div>
           </div>
@@ -413,7 +428,7 @@ export default function ProductDetail() {
       <div className={styles.orderSection} ref={orderFormRef}>
         <div className={styles.orderContainer}>
           <div className={styles.orderImageSection}>
-            <img src="/toy4.jpeg" alt="লার্নিং টয়" className={styles.orderProductImage} />
+            <img src="/toy01.jpeg" alt="লার্নিং টয়" className={styles.orderProductImage} />
           </div>
           
           <div className={styles.orderFormSection}>
@@ -427,7 +442,8 @@ export default function ProductDetail() {
                   <p><strong>Name:</strong> {formData.name}</p>
                   <p><strong>Phone:</strong> {formData.phone}</p>
                   <p><strong>Quantity:</strong> {quantity} {selectedWeight}</p>
-                  <p><strong>Total:</strong> ৳{(productPrice * quantity).toFixed(2)}</p>
+                  <p><strong>Shipping:</strong> ৳{shippingCharge}</p>
+                  <p><strong>Total:</strong> ৳{totalWithShipping.toFixed(2)}</p>
                 </div>
               </div>
             ) : (
@@ -483,6 +499,35 @@ export default function ProductDetail() {
                   </div>
 
                   <div className={styles.formGroup}>
+                    <label>ডেলিভারি এলাকা *</label>
+                    <div className={styles.deliveryAreaOptions}>
+                      <label className={styles.deliveryAreaLabel}>
+                        <input
+                          type="radio"
+                          name="area"
+                          value="inside"
+                          checked={formData.area === 'inside'}
+                          onChange={() => setFormData({ ...formData, area: 'inside' })}
+                        />
+                        ঢাকা শহরের ভিতরে
+                      </label>
+                      <label className={styles.deliveryAreaLabel}>
+                        <input
+                          type="radio"
+                          name="area"
+                          value="outside"
+                          checked={formData.area === 'outside'}
+                          onChange={() => setFormData({ ...formData, area: 'outside' })}
+                        />
+                        ঢাকা শহরের বাইরে
+                      </label>
+                    </div>
+                    <span className={styles.deliveryAreaNote}>
+                      {formData.area === 'inside' ? 'ঢাকার ভিতরে ডেলিভারি চার্জ ৬০ টাকা' : 'ঢাকার বাইরে ডেলিভারি চার্জ ১২০ টাকা'}
+                    </span>
+                  </div>
+
+                  <div className={styles.formGroup}>
                     <label>পরিমাণ</label>
                     <div className={styles.quantityControlForm}>
                       <button type="button" onClick={() => handleQuantityChange(-1)}>−</button>
@@ -492,8 +537,16 @@ export default function ProductDetail() {
                   </div>
 
                   <div className={styles.orderTotal}>
+                    <span>শিপিং:</span>
+                    <span className={styles.totalPrice}>
+                      ৳{formData.area === 'inside' ? 60 : 120}
+                    </span>
+                  </div>
+                  <div className={styles.orderTotal}>
                     <span>মোট:</span>
-                    <span className={styles.totalPrice}>৳{(productPrice * quantity).toFixed(2)}</span>
+                    <span className={styles.totalPrice}>
+                      ৳{(productPrice * quantity + (formData.area === 'inside' ? 60 : 120)).toFixed(2)}
+                    </span>
                   </div>
 
                   <button type="submit" className={styles.submitOrderBtn}>

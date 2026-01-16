@@ -46,6 +46,50 @@ export default function ProductDetail() {
     orderFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  // Direct order: send order JSON to server API (saves to DB or local fallback)
+  const handleDirectOrder = async () => {
+    if (!validateForm()) return;
+
+    const shipping = formData.area === 'inside' ? 60 : 120;
+    const total = productPrice * quantity + shipping;
+
+    const payload = {
+      productName: 'সোনামণিদের বাংলা ইংরেজি শেখার লার্নিং এন্ড প্লেয়িং টয়',
+      price: productPrice,
+      originalPrice,
+      quantity,
+      shipping,
+      total,
+      area: formData.area,
+      customerName: formData.name,
+      phone: formData.phone,
+      address: formData.address,
+    };
+
+    try {
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        alert(err.message || 'সার্ভারে অর্ডার রেকর্ড করতে সমস্যা হয়েছে।');
+        return;
+      }
+
+      setOrderSubmitted(true);
+      setTimeout(() => {
+        setOrderSubmitted(false);
+        setFormData({ name: '', phone: '', address: '', area: 'inside' });
+      }, 5000);
+    } catch (error) {
+      console.error('Direct order failed', error);
+      alert('নেটওয়ার্ক বা সার্ভার সমস্যা, পরে আবার চেষ্টা করুন।');
+    }
+  };
+
   const images = [
     '/toy01.jpeg',
 
@@ -550,6 +594,9 @@ export default function ProductDetail() {
                   </div>
 
                   <div className={styles.orderActions}>
+                    <button type="button" className={styles.directOrderBtn} onClick={handleDirectOrder}>
+                      🛒 সরাসরি অর্ডার করুন
+                    </button>
                     <button type="submit" className={styles.submitOrderBtn}>
                       💬WhatsApp এ অর্ডার করুন
                     </button>

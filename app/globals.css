@@ -1,6 +1,15 @@
 /* Import Noto Serif Bengali from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;700&display=swap');
 
+/* Design variables used across admin pages */
+:root {
+  --bg-1: #fbfdff;
+  --muted: #6b7280;
+  --accent: #6c5ce7;
+  --accent-2: #7c3aed;
+  --card-shadow: 0 12px 40px rgba(16,24,40,0.06);
+}
+
 * {
   margin: 0;
   padding: 0;

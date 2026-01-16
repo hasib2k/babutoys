@@ -401,6 +401,214 @@
   border-color: #0070f3;
 }
 
+/* Photo carousel for reviews */
+.photoCarousel {
+  width: 100%;
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+.photoCarousel .reviewsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.photoCarousel .reviewsHeader h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+.photoCarousel .reviewsHeader span {
+  color: #666;
+  font-size: 0.95rem;
+}
+.photoCarousel .photoMain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.photoCarousel .photoMain img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  object-fit: contain;
+  box-shadow: none;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Make review photo carousel match hero carousel styles */
+.photoCarousel .photoMain {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.photoCarousel .photoMain .carouselNav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+}
+.photoCarousel .photoMain .carouselNav:active { transform: translateY(-50%) scale(0.97); }
+.photoCarousel .photoMain .carouselNav:first-of-type { left: 8px; }
+.photoCarousel .photoMain .carouselNav:last-of-type { right: 8px; }
+.photoCarousel .carouselThumbs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 6px 4px;
+  max-width: 760px;
+  justify-content: center;
+}
+.photoCarousel .carouselThumbs img {
+  width: 56px;
+  height: 42px;
+  object-fit: cover;
+  border-radius: 6px;
+  opacity: 0.85;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.photoCarousel button[aria-label] {
+  background: rgba(0,0,0,0.06);
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+}
+.photoCarousel .carouselThumbs {
+  margin-top: 10px;
+  gap: 8px;
+}
+.photoCarousel .carouselThumbs img {
+  width: 72px;
+  height: 72px;
+  border-radius: 6px;
+  object-fit: cover;
+  opacity: 0.9;
+  transition: transform 0.15s, box-shadow 0.15s;
+  background: transparent;
+  border: none;
+}
+.photoCarousel .carouselThumbs img:hover { transform: translateY(-4px); }
+
+/* Photo Review Section (header centering) */
+.photoReviewSection {
+  max-width: 980px;
+  margin: 20px auto 28px auto;
+  padding: 6px 12px;
+  background: transparent;
+  text-align: center;
+}
+.photoReviewSection .responsiveSmallText {
+  display: inline-block;
+  margin: 0 0 12px 0;
+  background: #c42a0e;
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 10px;
+  letter-spacing: 0.6px;
+}
+
+/* Video heading pill to match photo review */
+.videoHeading {
+  display: inline-block;
+  margin: 0 0 12px 0;
+  background: #c42a0e;
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 10px;
+  letter-spacing: 0.6px;
+}
+
+/* Keep prev/next buttons fixed (overlay) inside photo review carousel */
+.photoReviewSection {
+  position: relative; /* anchor for absolute nav buttons */
+}
+.photoReviewSection .carouselMain {
+  position: relative;
+}
+.photoReviewSection .carouselNav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 30;
+}
+.photoReviewSection .carouselMain .carouselNav:first-of-type { left: 8px; }
+.photoReviewSection .carouselMain .carouselNav:last-of-type { right: 8px; }
+
+@media (max-width: 480px) {
+  .photoReviewSection .carouselNav {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+  .photoReviewSection .carouselMain .carouselNav:first-of-type { left: 6px; }
+  .photoReviewSection .carouselMain .carouselNav:last-of-type { right: 6px; }
+}
+
+@media (max-width: 768px) {
+  .photoCarousel {
+    padding: 12px;
+  }
+  .photoCarousel .photoMain img {
+    max-width: 320px;
+  }
+  .photoCarousel button[aria-label] {
+    width: 48px;
+    height: 48px;
+    font-size: 22px;
+  }
+  .photoCarousel .carouselThumbs img {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+@media (max-width: 420px) {
+  .photoCarousel .photoMain img {
+    max-width: 280px;
+  }
+  .photoCarousel .reviewsHeader h3 { font-size: 1rem; }
+}
+
 @media (max-width: 1200px) {
   .videoPreviewSection .video-wrapper {
     max-width: 900px;
@@ -444,6 +652,45 @@
   padding: 10px 0 10px 0;
   letter-spacing: 1px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+/* Separate product description block (visually distinct from tabs/reviews) */
+.productDescriptionBlock {
+  max-width: 980px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 18px 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+  color: #222;
+}
+.productDescriptionBlock h3 {
+  text-align: center;
+  margin: 0 0 8px 0;
+  font-size: 1.15rem;
+  color: #111;
+}
+.productDescriptionBlock h4 {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+.productDescriptionBlock p {
+  line-height: 1.7;
+  margin: 8px 0;
+  color: #333;
+}
+.productDescriptionBlock ul {
+  margin: 8px 0 0 20px;
+}
+.productDescriptionBlock li {
+  margin-bottom: 6px;
+}
+
+@media (max-width: 640px) {
+  .productDescriptionBlock { padding: 12px; margin: 12px 10px; border-radius: 8px; }
+  .productDescriptionBlock h3 { font-size: 1rem; }
+  .productDescriptionBlock h4 { font-size: 0.98rem; }
 }
 
 
@@ -550,6 +797,55 @@
   letter-spacing: -0.21px;
   white-space: normal;
   max-width: 100%;
+}
+
+/* Footer */
+.siteFooter {
+  background: #c42a0e; /* soft theme orange */
+  color: #fff;
+  padding: 18px 12px;
+  margin-top: 28px;
+}
+.footerInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-direction: column;
+}
+.socialIcons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+.socialIconLink {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.12); /* light circle for contrast on orange */
+  color: #ffffff;
+  text-decoration: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.socialIconLink:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.12); }
+.iconSvg { width: 20px; height: 20px; }
+.iconImg { width: 20px; height: 20px; display: block; object-fit: contain; }
+.copyText {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  margin-top: 6px;
+}
+
+@media (min-width: 700px) {
+  .footerInner { flex-direction: row; }
+  .copyText { margin-top: 0; margin-left: 10px; }
 }
 
 .heroBtn {
@@ -1457,7 +1753,7 @@
   width: 100%;
   padding: 16px;
   background: #ffffff;
-  color: #d35400;
+  color: #70d300;
   border: 2px solid #d35400;
   border-radius: 50px;
   font-size: 18px;
@@ -1494,30 +1790,30 @@
 
 /* Floating admin login button */
 .adminLoginBtn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background: #111;
   color: #fff;
   text-decoration: none;
   font-size: 20px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.22);
-  transition: transform 0.15s, background 0.15s, box-shadow 0.15s;
-  z-index: 60;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 .adminLoginBtn:hover {
-  transform: translateY(-4px);
+  transform: scale(1.1);
   background: #000;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.28);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.28);
 }
 
 @media (max-width: 600px) {
   .adminLoginBtn {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     font-size: 18px;
   }
 }
@@ -1907,13 +2203,15 @@
   }
   
   .whatsappBtn,
-  .callBtn {
+  .callBtn,
+  .adminLoginBtn {
     width: 50px;
     height: 50px;
   }
   
   .whatsappBtn svg,
-  .callBtn svg {
+  .callBtn svg,
+  .adminLoginBtn svg {
     width: 24px;
     height: 24px;
   }

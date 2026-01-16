@@ -11,37 +11,166 @@ export async function GET(req: Request) {
         return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
       }
     }
-
-    // If DATABASE_URL is present, try Prisma
+    // Try to read from both Prisma (if available) and local file, then merge.
+    let dbRows: any[] = [];
     if (process.env.DATABASE_URL) {
       try {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const { PrismaClient } = require('@prisma/client');
         const prisma = new PrismaClient();
-        const rows = await prisma.order.findMany({ orderBy: { createdAt: 'desc' } });
+        dbRows = await prisma.order.findMany({ orderBy: { createdAt: 'desc' } });
         try { await prisma.$disconnect(); } catch (e) {}
-        // Map createdAt to human readable string
-        const formatted = rows.map((r: any) => ({
-          ...r,
-          createdAt: (new Date(r.createdAt)).toLocaleString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: true }).replace(',', ''),
-        }));
-        return NextResponse.json({ orders: formatted });
       } catch (e) {
-        console.error('Prisma read failed, falling back to file', e);
+        console.error('Prisma read failed, continuing with file fallback', e);
+        dbRows = [];
       }
     }
 
     const dataDir = path.join(process.cwd(), 'data');
     const filePath = path.join(dataDir, 'orders.json');
+    let fileOrders: any[] = [];
     try {
       const raw = await fs.readFile(filePath, 'utf8');
-      const orders = JSON.parse(raw || '[]');
-      return NextResponse.json({ orders });
+      fileOrders = JSON.parse(raw || '[]');
     } catch (e) {
-      return NextResponse.json({ orders: [] });
+      fileOrders = [];
     }
+
+    // Normalize numeric IDs in file orders when possible
+    fileOrders = fileOrders.map((f: any) => ({
+      ...f,
+      id: !isNaN(Number(f.id)) ? String(Number(f.id)) : String(f.id),
+    }));
+
+    // Helper to format dates like file fallback (DD-MM-YYYY, hh:mm:ss AM/PM)
+    const formatDateForDisplay = (d = new Date()) => {
+      const dt = new Date(d);
+      const day = String(dt.getDate()).padStart(2, '0');
+      const month = String(dt.getMonth() + 1).padStart(2, '0');
+      const year = dt.getFullYear();
+      let hours = dt.getHours();
+      const minutes = String(dt.getMinutes()).padStart(2, '0');
+      const seconds = String(dt.getSeconds()).padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      if (hours === 0) hours = 12;
+      const hourStr = String(hours).padStart(2, '0');
+      return `${day}-${month}-${year}, ${hourStr}:${minutes}:${seconds} ${ampm}`;
+    };
+
+    // Normalize DB rows' createdAt (with seconds) and include raw ISO; coerce numeric IDs
+    const dbFormatted = dbRows.map((r: any) => {
+      const num = Number(r.id);
+      const idStr = !isNaN(num) ? String(num) : String(r.id);
+      return {
+        ...r,
+        id: idStr,
+        createdAt: r.createdAt ? formatDateForDisplay(r.createdAt) : '',
+        createdAtRaw: r.createdAt ? (new Date(r.createdAt)).toISOString() : '',
+      };
+    });
+
+    const dbIds = new Set(dbFormatted.map((r: any) => String(r.id)));
+    // Merge with file orders, skipping file entries that match DB ids
+    let merged = [
+      ...dbFormatted,
+      ...fileOrders.filter((f: any) => !dbIds.has(String(f.id))),
+    ];
+
+    // Final dedupe by signature (phone|address|total|customerName) prefer DB entries
+    const seen = new Set<string>();
+    const deduped: any[] = [];
+    for (const item of merged) {
+      const key = `${String(item.phone||'')}|${String(item.address||'')}|${String(item.total||'')}|${String(item.customerName||'')}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      deduped.push(item);
+    }
+    merged = deduped;
+
+    // Attach a simple sequential displayId (1,2,3...) for UI display
+    const withDisplay = merged.map((it: any, idx: number) => ({
+      ...it,
+      displayId: idx + 1,
+    }));
+
+    return NextResponse.json({ orders: withDisplay });
   } catch (error) {
     console.error(error);
+    return NextResponse.json({ message: 'Server error' }, { status: 500 });
+  }
+}
+
+export async function POST(req: Request) {
+  try {
+    const adminPassword = process.env.ADMIN_PASSWORD;
+    if (adminPassword) {
+      const provided = req.headers.get('x-admin-password') || '';
+      if (provided !== adminPassword) {
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+      }
+    }
+
+    const body = await req.json().catch(() => ({}));
+    const { id, action } = body || {};
+    if (!id || !action) {
+      return NextResponse.json({ message: 'Missing id or action' }, { status: 400 });
+    }
+
+    // If DATABASE_URL is present, try Prisma update/delete
+    if (process.env.DATABASE_URL) {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const { PrismaClient } = require('@prisma/client');
+        const prisma = new PrismaClient();
+
+        if (action === 'delete') {
+          await prisma.order.delete({ where: { id: String(id) } });
+          try { await prisma.$disconnect(); } catch (e) {}
+          return NextResponse.json({ ok: true, message: 'Deleted' });
+        }
+
+        if (action === 'complete' || action === 'pending') {
+          const status = action === 'complete' ? 'completed' : 'pending';
+          const updated = await prisma.order.update({ where: { id: String(id) }, data: { status } });
+          try { await prisma.$disconnect(); } catch (e) {}
+          return NextResponse.json({ ok: true, order: updated });
+        }
+      } catch (e) {
+        console.error('Prisma update failed, falling back to file', e);
+      }
+    }
+
+    // File fallback
+    const dataDir = path.join(process.cwd(), 'data');
+    const filePath = path.join(dataDir, 'orders.json');
+    let orders: any[] = [];
+    try {
+      const raw = await fs.readFile(filePath, 'utf8');
+      orders = JSON.parse(raw || '[]');
+    } catch (e) {
+      orders = [];
+    }
+
+    const idx = orders.findIndex((o: any) => String(o.id) === String(id));
+    if (idx === -1) {
+      return NextResponse.json({ message: 'Order not found' }, { status: 404 });
+    }
+
+    if (action === 'delete') {
+      orders.splice(idx, 1);
+    } else if (action === 'complete' || action === 'pending') {
+      orders[idx].status = action === 'complete' ? 'completed' : 'pending';
+    } else {
+      return NextResponse.json({ message: 'Unknown action' }, { status: 400 });
+    }
+
+    await fs.mkdir(dataDir, { recursive: true });
+    await fs.writeFile(filePath, JSON.stringify(orders, null, 2), 'utf8');
+
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    console.error('Admin orders POST error', error);
     return NextResponse.json({ message: 'Server error' }, { status: 500 });
   }
 }

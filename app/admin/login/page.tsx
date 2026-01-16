@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import styles from '../Admin.module.css';
 
 export default function AdminLoginPage() {
   const [password, setPassword] = useState('');
@@ -34,19 +35,27 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div style={{ padding: 16 }}>
-      <h2>Admin Login</h2>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+    <div className={styles.adminLoginCard}>
+      <div className={styles.adminLoginTitle}>Admin</div>
+      <div className={styles.adminLoginDesc}>Sign in to manage orders and view live activity.</div>
+
+      <form onSubmit={handleSubmit} style={{ marginTop: 8 }}>
         <input
+          className={styles.adminLoginInput}
           type="password"
-          placeholder="Admin password"
+          placeholder="Enter admin password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={{ padding: '8px 10px' }}
+          aria-label="Admin password"
         />
-        <button type="submit" style={{ padding: '8px 12px' }} disabled={loading}>{loading ? 'Logging...' : 'Login'}</button>
+
+        <div className={styles.adminLoginActions}>
+          <button className={styles.adminLoginBtn} type="submit" disabled={loading}>{loading ? 'Signing in...' : 'Sign In'}</button>
+        </div>
       </form>
-      {error && <div style={{ color: 'red', marginTop: 8 }}>{error}</div>}
+
+      {error && <div style={{ color: '#ef4444', marginTop: 12 }}>{error}</div>}
+      <div className={styles.adminLoginNote}>Only authorized users should access this area.</div>
     </div>
   );
 }

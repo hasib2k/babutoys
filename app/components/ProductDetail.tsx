@@ -549,9 +549,14 @@ export default function ProductDetail() {
                     </span>
                   </div>
 
-                  <button type="submit" className={styles.submitOrderBtn}>
-                    অর্ডার করুন (ক্যাশ অন ডেলিভারি)
-                  </button>
+                  <div className={styles.orderActions}>
+                    <button type="submit" className={styles.submitOrderBtn}>
+                      💬WhatsApp এ অর্ডার করুন
+                    </button>
+                    <a href="tel:+8801870451231" className={styles.callOrderBtn} title="Call to place order">
+                      📞ফোন করে অর্ডার করুন
+                    </a>
+                  </div>
 
                   <p className={styles.orderNote}>
                     🛒 ক্যাশ অন ডেলিভারি। পণ্য হাতে পেয়ে টাকা পরিশোধ করুন।

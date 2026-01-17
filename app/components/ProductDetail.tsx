@@ -557,7 +557,7 @@ export default function ProductDetail() {
                       সরাসরি অর্ডার করুন ╰┈➤
                     </button>
                     <button type="submit" className={styles.submitOrderBtn}>
-                      WhatsApp এ অর্ডার করুন 🗪
+                      WhatsApp এ অর্ডার করুন 🗨
                     </button>
                     <a href="tel:+880 1619-703227" className={styles.callOrderBtn} title="Call to place order">
                       ফোন করে অর্ডার করুন ✆

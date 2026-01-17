@@ -92,74 +92,56 @@
   justify-content: flex-start;
   flex-wrap: wrap;
 }
-
+/* Consolidated delivery area styles
+   - single source of truth for label appearance
+   - supports modern parent-targeting :has(), and a couple of fallbacks:
+     1) input:checked + label (if input precedes label in DOM)
+     2) add `.selected` class on label via JS when needed
+*/
 .deliveryAreaLabel {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
-  padding: 12px 26px;
+  gap: 0.6rem;
+  padding: 10px 18px;
   border: 2px solid #e0e0e0;
-  border-radius: 50px;
+  border-radius: 12px;
   background: linear-gradient(135deg, #f0f8ff 60%, #e6f0fa 100%);
   font-weight: 700;
-  font-size: 1.08rem;
+  font-size: 1.02rem;
   color: #222;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  transition: border 0.2s, background 0.2s, box-shadow 0.2s, color 0.2s;
+  transition: border .18s, background .18s, box-shadow .18s, color .18s, transform .12s;
   position: relative;
-  min-width: 170px;
+  min-width: 140px;
   margin-bottom: 6px;
 }
 .deliveryAreaLabel input[type="radio"] {
   accent-color: #7f97b3;
   width: 18px;
   height: 18px;
-}
-.deliveryAreaLabel:has(input[type="radio"]:checked) {
-  border-color: #00f335;
-  background: linear-gradient(135deg, #e6f0fa 60%, #d0e7ff 100%);
-  color: #f30000;
-  box-shadow: 0 4px 16px rgba(0,112,243,0.10);
-}
-.deliveryAreaLabel:hover,
-.deliveryAreaLabel:focus-within {
-  border-color: #f33100;
-  background: linear-gradient(135deg, #e6f0fa 60%, #d0e7ff 100%);
-  color: #f30000;
-  box-shadow: 0 4px 16px rgba(0,112,243,0.13);
-}
-.deliveryAreaNote {
-  color: #fff;
-  font-size: 1.05rem;
-  margin-bottom: 10px;
-  display: block;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  margin-right: 8px;
 }
 
-.deliveryAreaLabel {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 10px 18px;
-  border: 2px solid #000;
-  border-radius: 6px;
-  background: #f0f8ff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: border 0.2s, background 0.2s;
-}
-.deliveryAreaLabel input[type="radio"] {
-  accent-color: #f30000;
-}
-.deliveryAreaLabel:has(input[type="radio"]:checked) {
+/* Checked / selected state - multiple selectors to support different markup patterns */
+.deliveryAreaOptions input[type="radio"]:checked + .deliveryAreaLabel,
+.deliveryAreaLabel:has(input[type="radio"]:checked),
+.deliveryAreaLabel.selected {
   border-color: #0070f3;
-  background: #e6f0fa;
+  background: linear-gradient(135deg, #e6f0fa 60%, #d0e7ff 100%);
+  color: #111;
+  box-shadow: 0 6px 20px rgba(0,112,243,0.10);
+  transform: translateY(-2px);
 }
+
+.deliveryAreaLabel:hover,
+.deliveryAreaLabel:focus-within {
+  border-color: #ff6b35;
+  box-shadow: 0 6px 16px rgba(0,112,243,0.08);
+}
+
 .deliveryAreaNote {
-  color: #fff;
+  color: #666;
   font-size: 0.95rem;
   margin-bottom: 10px;
   display: block;
@@ -570,6 +552,27 @@
   font-size: 12px;
   border-radius: 8px;
 }
+
+/* Collapse grid after 6 items; reveal when `.collapsed` removed */
+.photoGrid.collapsed .photoItem:nth-child(n+7) {
+  display: none;
+}
+
+/* Toggle button under grid */
+.photoToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  background: #0000002a;
+  color: #000000;
+  border: none;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s, background 0.12s;
+}
+.photoToggle:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.12); }
 
 /* Lightbox styles */
 .lightbox {
@@ -1648,8 +1651,10 @@
   }
 }
 
+
+  /* Match site theme: warm orange gradient used across hero and highlights */
 .orderFormSection {
-  background: linear-gradient(135deg, #f87748 0%, #f7931e 100%);
+  background: linear-gradient(135deg, #ff6b35a9 0%, #f7931ea6 100%);
   padding: 40px;
   border-radius: 20px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.1);
@@ -1849,7 +1854,6 @@
   padding: 16px;
   background: #ffffff;
   color: #000000;
-  border: 2px solid #d35400;
   border-radius: 50px;
   font-size: 18px;
   font-weight: 700;
@@ -1861,9 +1865,7 @@
 
 .callOrderBtn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 239, 233, 0);
-  background: #ffffff00;
-  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
 }
 
 @media (max-width: 600px) {

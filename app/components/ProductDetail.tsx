@@ -44,6 +44,7 @@ export default function ProductDetail() {
   });
   const [photoIndex, setPhotoIndex] = useState(0);
   const [showLightbox, setShowLightbox] = useState(false);
+  const [showAllPhotos, setShowAllPhotos] = useState(false);
 
   const scrollToOrder = () => {
     orderFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -402,7 +403,7 @@ export default function ProductDetail() {
       <div className={styles.guardianReviewSection}>
         {reviewPhotos.length > 0 ? (
           <>
-            <div className={styles.photoGrid}>
+            <div className={`${styles.photoGrid} ${!showAllPhotos ? styles.collapsed : ''}`}>
               {reviewPhotos.map((p, i) => (
                 <button
                   key={i}
@@ -415,6 +416,18 @@ export default function ProductDetail() {
                 </button>
               ))}
             </div>
+
+            {reviewPhotos.length > 6 && (
+              <div style={{ textAlign: 'center', marginTop: 12 }}>
+                <button
+                  type="button"
+                  className={styles.photoToggle}
+                  onClick={() => setShowAllPhotos((s) => !s)}
+                >
+                  {showAllPhotos ? 'কম দেখান ↑' : 'আরও দেখুন ↓'}
+                </button>
+              </div>
+            )}
 
             {showLightbox && (
               <div className={styles.lightbox} role="dialog" aria-modal="true" onClick={() => setShowLightbox(false)}>

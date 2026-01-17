@@ -43,6 +43,7 @@ export default function ProductDetail() {
     review: ''
   });
   const [photoIndex, setPhotoIndex] = useState(0);
+  const [showLightbox, setShowLightbox] = useState(false);
 
   const scrollToOrder = () => {
     orderFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -140,7 +141,7 @@ export default function ProductDetail() {
     },
   ];
 
-  const reviewPhotos = ['/review.jpg','/review4.jpg','/review5.jpg','/review6.jpg','/review7.jpg'];
+  const reviewPhotos = ['/review.jpg','/review2.jpg','/review3.jpg','/review4.jpg','/review5.jpg','/review6.jpg','/review7.jpg','/review11.jpg','/review13.jpg','/review12.jpg'];
 
   const productPrice = 990;
   const originalPrice = 1650;
@@ -211,7 +212,7 @@ export default function ProductDetail() {
       `আমি এই অর্ডারটি কনফার্ম করতে চাই। দয়া করে নিশ্চিত করুন।`;
 
     // Redirect to WhatsApp
-    const whatsappURL = `https://wa.me/8801870451231?text=${message}`;
+    const whatsappURL = `https://wa.me/+8801619703227?text=${message}`;
     window.open(whatsappURL, '_blank');
 
     // Show success message
@@ -249,17 +250,11 @@ export default function ProductDetail() {
 
       {/* Product description previously here — moved below product details */}
       {/* Static Text Section under Carousel */}
-        <div className={styles.staticTextSectionVideo}>
-        <div className={styles.mobileCarouselWrapper}>
-          {/* Carousel slides (add more if needed) */}
-          <div className={styles.mobileCarouselSlide}>
-            <span className={styles.responsiveSmallText}>
-
-      সোনামণিদের বাংলা ইংরেজি শেখার লার্নিং এন্ড প্লেয়িং টয়
-        </span>
+      <div className={styles.staticTextSectionVideo}>
+        <h3 className={`${styles.responsiveSmallText} ${styles.videoHeading}`}>সোনামণিদের বাংলা ইংরেজি শেখার লার্নিং এন্ড প্লেয়িং টয়</h3>
       </div>
+      <div className={styles.guardianReviewSection}>
     </div>
-      </div>
       {/* Video Preview Section (local review1.mp4) with product image carousel */}
       <div className={styles.videoPreviewSection}>
         <div className={styles['video-wrapper']}>
@@ -288,15 +283,11 @@ export default function ProductDetail() {
 
       {/* Static Text Section under Video - Carousel for Mobile */}
       <div className={styles.staticTextSectionVideo}>
-        <div className={styles.mobileCarouselWrapper}>
-          {/* Carousel slides (add more if needed) */}
-          <div className={styles.mobileCarouselSlide}>
-            <span className={styles.responsiveSmallText}>
-              এই লার্নিং টয় দিয়ে শিশুরা যেমন খেলতে পারবে ঠিক তেমনি আনন্দের সাথে শিখতেও পারবে
-            </span>
-          </div>
-        </div>
+        <h3 className={`${styles.responsiveSmallText} ${styles.videoHeading}`}>এই লার্নিং টয় দিয়ে শিশুরা যেমন খেলতে পারবে ঠিক তেমনি শিখতেও পারবে</h3>
       </div>
+      <div className={styles.guardianReviewSection}>
+      </div>
+      
 
       <div className={styles.container}>
         {/* Product Detail Section */}
@@ -404,28 +395,37 @@ export default function ProductDetail() {
         </div>
       </div>
 
-      {/* Photo Review Carousel (uses reviewPhotos) */}
-      <div className={styles.photoReviewSection}>
-        <h3 className={styles.responsiveSmallText}>ফটো রিভিউ</h3>
+      {/* Photo Review Grid with Lightbox */}
+      <div className={styles.staticTextSectionVideo}>
+        <h3 className={`${styles.responsiveSmallText} ${styles.videoHeading}`}>ফটো রিভিউ</h3>
+      </div>
+      <div className={styles.guardianReviewSection}>
         {reviewPhotos.length > 0 ? (
-          <div className={styles.heroCarousel}>
-            <div className={styles.carouselMain}>
-              <button className={styles.carouselNav} onClick={() => setPhotoIndex(i => (i - 1 + reviewPhotos.length) % reviewPhotos.length)}>‹</button>
-              <img src={reviewPhotos[photoIndex]} alt={`Review photo ${photoIndex + 1}`} style={{ maxWidth: 420, width: '100%', height: 'auto', borderRadius: 12 }} />
-              <button className={styles.carouselNav} onClick={() => setPhotoIndex(i => (i + 1) % reviewPhotos.length)}>›</button>
-            </div>
-            <div className={styles.carouselThumbs}>
+          <>
+            <div className={styles.photoGrid}>
               {reviewPhotos.map((p, i) => (
-                <img
+                <button
                   key={i}
-                  src={p}
-                  alt={`thumb ${i + 1}`}
-                  className={i === photoIndex ? styles.activeThumb : ''}
-                  onClick={() => setPhotoIndex(i)}
-                />
+                  className={styles.photoItem}
+                  onClick={() => { setPhotoIndex(i); setShowLightbox(true); }}
+                  aria-label={`Open review photo ${i + 1}`}
+                >
+                  <img src={p} alt={`Review ${i + 1}`} />
+                  <div className={styles.photoOverlay}>{i + 1}</div>
+                </button>
               ))}
             </div>
-          </div>
+
+            {showLightbox && (
+              <div className={styles.lightbox} role="dialog" aria-modal="true" onClick={() => setShowLightbox(false)}>
+                <button className={styles.lightboxClose} onClick={() => setShowLightbox(false)} aria-label="Close">✕</button>
+                <button className={styles.lightboxNav} onClick={(e) => { e.stopPropagation(); setPhotoIndex((photoIndex - 1 + reviewPhotos.length) % reviewPhotos.length); }} aria-label="Previous">‹</button>
+                <img src={reviewPhotos[photoIndex]} alt={`Lightbox review ${photoIndex + 1}`} className={styles.lightboxImg} onClick={(e) => e.stopPropagation()} />
+                <button className={styles.lightboxNav} style={{ right: 20 }} onClick={(e) => { e.stopPropagation(); setPhotoIndex((photoIndex + 1) % reviewPhotos.length); }} aria-label="Next">›</button>
+                <div className={styles.lightboxCounter}>{photoIndex + 1} / {reviewPhotos.length}</div>
+              </div>
+            )}
+          </>
         ) : (
           <p>কোনো ফটো রিভিউ নেই</p>
         )}
@@ -444,7 +444,7 @@ export default function ProductDetail() {
                 <div className={styles.orderSummary}>
                   <p><strong>Name:</strong> {formData.name}</p>
                   <p><strong>Phone:</strong> {formData.phone}</p>
-                  <p><strong>Quantity:</strong> {quantity} {selectedWeight}</p>
+                  <p><strong>Quantity:</strong> {quantity}</p>
                   <p><strong>Shipping:</strong> ৳{shippingCharge}</p>
                   <p><strong>Total:</strong> ৳{totalWithShipping.toFixed(2)}</p>
                 </div>
@@ -554,13 +554,13 @@ export default function ProductDetail() {
 
                   <div className={styles.orderActions}>
                     <button type="button" className={styles.directOrderBtn} onClick={handleDirectOrder}>
-                      🛒 সরাসরি অর্ডার করুন
+                      সরাসরি অর্ডার করুন ╰┈➤
                     </button>
                     <button type="submit" className={styles.submitOrderBtn}>
-                      💬WhatsApp এ অর্ডার করুন
+                      WhatsApp এ অর্ডার করুন 🗪
                     </button>
-                    <a href="tel:+8801870451231" className={styles.callOrderBtn} title="Call to place order">
-                      📞ফোন করে অর্ডার করুন
+                    <a href="tel:+880 1619-703227" className={styles.callOrderBtn} title="Call to place order">
+                      ফোন করে অর্ডার করুন ✆
                     </a>
                   </div>
 
@@ -577,7 +577,7 @@ export default function ProductDetail() {
       {/* Floating Action Buttons */}
       <div className={styles.floatingButtons}>
         <a 
-          href="https://wa.me/8801870451231" 
+          href="https://wa.me/+8801619703227" 
           target="_blank" 
           rel="noopener noreferrer"
           className={styles.whatsappBtn}
@@ -586,10 +586,10 @@ export default function ProductDetail() {
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" fill="currentColor"/>
             <path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652a12.062 12.062 0 005.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45zm-8.475 18.3c-1.778 0-3.52-.478-5.035-1.377l-.36-.214-3.742.98 1-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.002-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.885-9.887 9.885z" fill="currentColor"/>
-          </svg>
+          // svg tag properly closed above; removed stray </svg>
         </a>
         <a 
-          href="tel:+8801870451231" 
+          href="tel:+880 1619-703227" 
           className={styles.callBtn}
           title="Call us"
         >
@@ -609,17 +609,17 @@ export default function ProductDetail() {
       <footer className={styles.siteFooter}>
         <div className={styles.footerInner}>
           <div className={styles.socialIcons}>
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className={styles.socialIconLink}>
+            <a href="https://www.facebook.com/share/1BRiT1FXcY/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className={styles.socialIconLink}>
                 <img src="/facebook.svg" alt="Facebook" className={styles.iconImg} />
             </a>
-            <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className={styles.socialIconLink}>
+            <a href="https://www.tiktok.com/@babutoys.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className={styles.socialIconLink}>
                 <img src="/tiktok.svg" alt="TikTok" className={styles.iconImg} />
             </a>
-            <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className={styles.socialIconLink}>
+            <a href="https://m.youtube.com/@BabuToysYT" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className={styles.socialIconLink}>
                 <img src="/youtube.svg" alt="YouTube" className={styles.iconImg} />
             </a>
           </div>
-          <div className={styles.copyText}>© {new Date().getFullYear()} All rights reserved</div>
+          <div className={styles.copyText}>© {new Date().getFullYear()} Babu Toys - All rights reserved</div>
         </div>
       </footer>
     </div>

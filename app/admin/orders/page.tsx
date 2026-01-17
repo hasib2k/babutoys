@@ -13,7 +13,9 @@ export default function OrdersAdminPage() {
   const [error, setError] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const [query, setQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
+  const pageSize = 10;
 
   const fetchOrders = async () => {
     setLoading(true);
@@ -30,7 +32,18 @@ export default function OrdersAdminPage() {
         setOrders([]);
       } else {
         const data = await res.json();
-        setOrders(data.orders || []);
+        const genKey = (len = 10) => {
+          const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+          let s = '';
+          for (let i = 0; i < len; i++) s += letters[Math.floor(Math.random() * letters.length)];
+          return s;
+        };
+        const withKeys = (data.orders || []).map((o: any) => ({
+          ...o,
+          generatedKey: o.generatedKey || o.key || genKey(10)
+        }));
+        setOrders(withKeys);
+        setCurrentPage(1);
       }
     } catch (e) {
       setError('Network error');
@@ -54,8 +67,30 @@ export default function OrdersAdminPage() {
   const filtered = orders.filter((o: Order) => {
     if (!query) return true;
     const q = query.toLowerCase();
-    return String(o.displayId || o.id).includes(q) || (o.customerName || '').toLowerCase().includes(q) || (o.phone || '').includes(q);
+    return String(o.displayId || o.id).toLowerCase().includes(q)
+      || (o.customerName || '').toLowerCase().includes(q)
+      || (o.phone || '').toLowerCase().includes(q)
+      || (o.generatedKey || '').toLowerCase().includes(q);
   });
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const displayed = filtered.slice(startIndex, endIndex);
+
+  // Clamp current page if filter changes reduce total pages
+  useEffect(() => {
+    if (currentPage > totalPages) setCurrentPage(totalPages);
+  }, [currentPage, totalPages]);
+
+  // Scroll orders list into view when page changes
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const el = document.querySelector('.' + adminStyles.ordersList);
+    if (el && (el as HTMLElement).scrollIntoView) {
+      (el as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [currentPage]);
 
   const totalOrders = orders.length;
   const pendingCount = orders.filter((o: Order) => o.status === 'pending').length;
@@ -71,7 +106,7 @@ export default function OrdersAdminPage() {
         </div>
 
         <div className={adminStyles.adminSearch}>
-          <input className={adminStyles.adminInput} placeholder="Search by id, name, phone" value={query} onChange={e=>setQuery(e.target.value)} />
+          <input className={adminStyles.adminInput} placeholder="Search by id, name, phone" value={query} onChange={e=>{ setQuery(e.target.value); setCurrentPage(1); }} />
         </div>
 
         <div className={adminStyles.adminControls}>
@@ -80,7 +115,7 @@ export default function OrdersAdminPage() {
               <button className="btn" onClick={goToLogin}>Login</button>
             ) : (
               <span>
-                <button className="btn secondary" onClick={() => { localStorage.removeItem('admin_password'); setLoggedIn(false); setOrders([]); }}>Logout</button>
+                <button className="btn secondary" onClick={() => { localStorage.removeItem('admin_password'); setLoggedIn(false); setOrders([]); goToLogin(); }}>Logout</button>
                 <button className="btn" onClick={fetchOrders}>Refresh</button>
               </span>
             )}
@@ -109,12 +144,25 @@ export default function OrdersAdminPage() {
         </div>
       </div>
 
+      {filtered.length > pageSize && (
+        <div className={adminStyles.pagination}>
+          <div className={adminStyles.pageInfo}>Showing {Math.min(startIndex+1, filtered.length)}-{Math.min(endIndex, filtered.length)} of {filtered.length}</div>
+          <div className={adminStyles.pageControls}>
+            <button className={adminStyles.pageBtn} disabled={currentPage===1} onClick={() => setCurrentPage(p => Math.max(1, p-1))}>Prev</button>
+            {Array.from({length: totalPages}).map((_, i) => (
+              <button key={i} className={`${adminStyles.pageBtn} ${currentPage===i+1 ? adminStyles.activePageBtn : ''}`} onClick={() => setCurrentPage(i+1)}>{i+1}</button>
+            ))}
+            <button className={adminStyles.pageBtn} disabled={currentPage===totalPages} onClick={() => setCurrentPage(p => Math.min(totalPages, p+1))}>Next</button>
+          </div>
+        </div>
+      )}
+
       {loading ? (
         <div>Loading…</div>
       ) : (
         <div className={adminStyles.ordersList}>
           {filtered.length === 0 && <div>No orders</div>}
-          {filtered.map((o: Order) => (
+          {displayed.map((o: Order) => (
             <div key={o.id} className={`${adminStyles.orderCard} ${o.status === 'pending' ? adminStyles.pendingCard : adminStyles.completedCard}`}>
               <div className={adminStyles.orderThumbnail}>
                 <img src={'/toy07.jpg'} alt="product" />
@@ -123,8 +171,9 @@ export default function OrdersAdminPage() {
               <div className={adminStyles.orderDetails}>
                 <div className={adminStyles.orderHeaderRow}>
                   <div>
-                    <div className={adminStyles.orderId}>#{o.displayId || o.id}</div>
-                    <div className={adminStyles.orderDate}>{o.createdAt}</div>
+                      <div className={adminStyles.orderId}>#{o.displayId || o.id}</div>
+                      <div className={adminStyles.orderKey}>{o.generatedKey || o.key || ''}</div>
+                      <div className={adminStyles.orderDate}>{o.createdAt}</div>
                   </div>
                   <div className={adminStyles.badge + ' ' + (o.status === 'pending' ? 'pending' : 'completed')}>{o.status}</div>
                 </div>

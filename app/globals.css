@@ -35,10 +35,10 @@ body {
   background: #000000;
   color: #ffffff;
   border: 2px solid #000000;
-  padding: 15px 30px;
+  padding: 13px 30px;
   font-size: 18px;
   font-weight: bold;
-  border-radius: 0;
+  border-radius: 9999px;
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
@@ -52,7 +52,7 @@ body {
 }
 
 .btn-large {
-  padding: 20px 50px;
+  padding: 20px 300px;
   font-size: 22px;
   width: 100%;
   max-width: 400px;
@@ -94,6 +94,7 @@ h1, h2, h3 {
   .btn {
     padding: 12px 24px;
     font-size: 16px;
+    border-radius: 9999px;
   }
   
   .btn-large {

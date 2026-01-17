@@ -36,7 +36,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className={styles.adminLoginCard}>
-      <div className={styles.adminLoginTitle}>Admin</div>
+      <div className={styles.adminLoginTitle}>Admin Login</div>
       <div className={styles.adminLoginDesc}>Sign in to manage orders and view live activity.</div>
 
       <form onSubmit={handleSubmit} style={{ marginTop: 8 }}>

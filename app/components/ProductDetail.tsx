@@ -95,11 +95,11 @@ export default function ProductDetail() {
   };
 
   const images = [
+    '/toy3d.png',
     '/toy07.jpg',
     '/toy02.jpg',
     '/toy03.jpg',
     '/toy04.jpg',
-    '/toy05.jpg',
 
 
   ];

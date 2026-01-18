@@ -32,15 +32,9 @@ export default function OrdersAdminPage() {
         setOrders([]);
       } else {
         const data = await res.json();
-        const genKey = (len = 10) => {
-          const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-          let s = '';
-          for (let i = 0; i < len; i++) s += letters[Math.floor(Math.random() * letters.length)];
-          return s;
-        };
         const withKeys = (data.orders || []).map((o: any) => ({
           ...o,
-          generatedKey: o.generatedKey || o.key || genKey(10)
+          generatedKey: o.generatedKey || o.key || ''
         }));
         setOrders(withKeys);
         setCurrentPage(1);
@@ -77,6 +71,42 @@ export default function OrdersAdminPage() {
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const displayed = filtered.slice(startIndex, endIndex);
+
+  // Helper to categorize a date string into a bucket label
+  const groupLabelFor = (isoOrDisplay: string) => {
+    let d: Date | null = null;
+    if (!isoOrDisplay) return 'Older';
+    if (/\d{4}-\d{2}-\d{2}T/.test(isoOrDisplay)) {
+      const t = Date.parse(isoOrDisplay);
+      if (!isNaN(t)) d = new Date(t);
+    }
+    if (!d) {
+      const m = isoOrDisplay.match(/(\d{2})-(\d{2})-(\d{4})/);
+      if (m) {
+        const day = Number(m[1]);
+        const month = Number(m[2]) - 1;
+        const year = Number(m[3]);
+        d = new Date(year, month, day);
+      }
+    }
+    if (!d) return 'Older';
+
+    const now = new Date();
+    const diff = now.getTime() - d.getTime();
+    const oneDay = 24 * 60 * 60 * 1000;
+    if (diff < oneDay && now.getDate() === d.getDate() && now.getMonth() === d.getMonth() && now.getFullYear() === d.getFullYear()) return 'Today';
+    const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+    if (d.getFullYear() === yesterday.getFullYear() && d.getMonth() === yesterday.getMonth() && d.getDate() === yesterday.getDate()) return 'Yesterday';
+    if (diff < 7 * oneDay) return 'This Week';
+    return 'Older';
+  };
+
+  const groupedDisplayed: Record<string, Order[]> = { 'Today': [], 'Yesterday': [], 'This Week': [], 'Older': [] };
+  for (const o of displayed) {
+    const label = groupLabelFor(o.createdAtRaw || o.createdAt || '');
+    if (!groupedDisplayed[label]) groupedDisplayed[label] = [];
+    groupedDisplayed[label].push(o);
+  }
 
   // Clamp current page if filter changes reduce total pages
   useEffect(() => {
@@ -162,8 +192,12 @@ export default function OrdersAdminPage() {
       ) : (
         <div className={adminStyles.ordersList}>
           {filtered.length === 0 && <div>No orders</div>}
-          {displayed.map((o: Order) => (
-            <div key={o.id} className={`${adminStyles.orderCard} ${o.status === 'pending' ? adminStyles.pendingCard : adminStyles.completedCard}`}>
+          {['Today','Yesterday','This Week','Older'].map(label => (
+            groupedDisplayed[label] && groupedDisplayed[label].length > 0 ? (
+              <div key={label} style={{ marginBottom: 18 }}>
+                <div style={{ fontWeight: 800, margin: '8px 0' }}>{label}</div>
+                {groupedDisplayed[label].map((o: Order) => (
+                  <div key={o.id} className={`${adminStyles.orderCard} ${o.status === 'pending' ? adminStyles.pendingCard : adminStyles.completedCard}`}>
               <div className={adminStyles.orderThumbnail}>
                 <img src={'/toy07.jpg'} alt="product" />
               </div>
@@ -247,7 +281,10 @@ export default function OrdersAdminPage() {
                   </button>
                 </div>
               </div>
-            </div>
+                  </div>
+                ))}
+              </div>
+            ) : null
           ))}
         </div>
       )}

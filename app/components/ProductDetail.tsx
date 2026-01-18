@@ -34,6 +34,15 @@ export default function ProductDetail() {
   });
 
   const [orderSubmitted, setOrderSubmitted] = useState(false);
+  const [orderResult, setOrderResult] = useState<null | {
+    id: string;
+    generatedKey?: string;
+    name: string;
+    phone: string;
+    quantity: number;
+    shipping: number;
+    total: number;
+  }>(null);
 
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [reviewData, setReviewData] = useState({
@@ -83,11 +92,22 @@ export default function ProductDetail() {
         return;
       }
 
+      const body = await res.json().catch(() => ({}));
+      const id = body.id || String(Math.floor(Math.random() * 900000) + 100000);
+      const gen = body.generatedKey || body.key || id;
+
+      setOrderResult({
+        id,
+        generatedKey: gen,
+        name: formData.name,
+        phone: formData.phone,
+        quantity,
+        shipping: shipping,
+        total: Number(total),
+      });
       setOrderSubmitted(true);
-      setTimeout(() => {
-        setOrderSubmitted(false);
-        setFormData({ name: '', phone: '', address: '', area: 'inside' });
-      }, 5000);
+
+      // keep confirmation visible until user clicks Done
     } catch (error) {
       console.error('Direct order failed', error);
       alert('নেটওয়ার্ক বা সার্ভার সমস্যা, পরে আবার চেষ্টা করুন।');
@@ -212,17 +232,48 @@ export default function ProductDetail() {
       `*ঠিকানা:* ${formData.address}%0A%0A` +
       `আমি এই অর্ডারটি কনফার্ম করতে চাই। দয়া করে নিশ্চিত করুন।`;
 
-    // Redirect to WhatsApp
-    const whatsappURL = `https://wa.me/+8801619703227?text=${message}`;
-    window.open(whatsappURL, '_blank');
+    // Try to record order on server, then open WhatsApp and show confirmation
+    (async () => {
+      try {
+        const payload = {
+          productName: 'সোনামণিদের বাংলা ইংরেজি শেখার লার্নিং এন্ড প্লেয়িং টয়',
+          price: productPrice,
+          originalPrice,
+          quantity,
+          shipping,
+          total: Number(totalAmount),
+          area: formData.area,
+          customerName: formData.name,
+          phone: formData.phone,
+          address: formData.address,
+        };
 
-    // Show success message
-    setOrderSubmitted(true);
-    
-    setTimeout(() => {
-      setOrderSubmitted(false);
-      setFormData({ name: '', phone: '', address: '', area: 'inside' });
-    }, 5000);
+        const res = await fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        let id = String(Math.floor(Math.random() * 900000) + 100000);
+        let gen: string | undefined = undefined;
+        if (res.ok) {
+          const body = await res.json().catch(() => ({}));
+          id = body.id || id;
+          gen = body.generatedKey || body.key || id;
+        }
+
+        // Open WhatsApp (preserve UX)
+        const whatsappURL = `https://wa.me/+8801619703227?text=${message}`;
+        window.open(whatsappURL, '_blank');
+
+        // Show persistent confirmation with server id
+        setOrderResult({ id, generatedKey: gen, name: formData.name, phone: formData.phone, quantity, shipping, total: Number(totalAmount) });
+        setOrderSubmitted(true);
+      } catch (error) {
+        console.error('Direct order failed', error);
+        alert('নেটওয়ার্ক বা সার্ভার সমস্যা, পরে আবার চেষ্টা করুন।');
+      }
+    })();
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -455,14 +506,22 @@ export default function ProductDetail() {
               <div className={styles.successMessage}>
                 <div className={styles.successIcon}>✓</div>
                 <h3>Order Placed Successfully!</h3>
-                <p>Order #{Math.floor(Math.random() * 900000) + 100000}</p>
+                <p>Order #{orderResult && orderResult.generatedKey ? orderResult.generatedKey : (orderResult ? orderResult.id : (Math.floor(Math.random() * 900000) + 100000))}</p>
                 <p>We will contact you soon.</p>
                 <div className={styles.orderSummary}>
-                  <p><strong>Name:</strong> {formData.name}</p>
-                  <p><strong>Phone:</strong> {formData.phone}</p>
-                  <p><strong>Quantity:</strong> {quantity}</p>
-                  <p><strong>Shipping:</strong> ৳{shippingCharge}</p>
-                  <p><strong>Total:</strong> ৳{totalWithShipping.toFixed(2)}</p>
+                  <p><strong>Name:</strong> {orderResult ? orderResult.name : formData.name}</p>
+                  <p><strong>Phone:</strong> {orderResult ? orderResult.phone : formData.phone}</p>
+                  <p><strong>Quantity:</strong> {orderResult ? orderResult.quantity : quantity}</p>
+                  <p><strong>Shipping:</strong> ৳{orderResult ? orderResult.shipping : shippingCharge}</p>
+                  <p><strong>Total:</strong> ৳{orderResult ? orderResult.total.toFixed(2) : totalWithShipping.toFixed(2)}</p>
+                </div>
+                <div style={{ marginTop: 12 }}>
+                  <button className="btn" onClick={() => {
+                    // hide confirmation and reset form
+                    setOrderSubmitted(false);
+                    setOrderResult(null);
+                    setFormData({ name: '', phone: '', address: '', area: 'inside' });
+                  }}>Done</button>
                 </div>
               </div>
             ) : (

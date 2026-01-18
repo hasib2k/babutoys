@@ -27,6 +27,18 @@ function formatDateForDisplay(d = new Date()) {
   return `${day}-${month}-${year}, ${hourStr}:${minutes} ${ampm}`;
 }
 
+function generateAlphaKey(existing: any[], len = 10) {
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const existingSet = new Set(existing.map(o => String(o.generatedKey || o.key || o.id || '')));
+  for (let attempt = 0; attempt < 5000; attempt++) {
+    let s = '';
+    for (let i = 0; i < len; i++) s += letters[Math.floor(Math.random() * letters.length)];
+    if (!existingSet.has(s)) return s;
+  }
+  // fallback
+  return ('GEN' + Date.now()).slice(-len).toUpperCase();
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -62,10 +74,12 @@ export async function POST(req: Request) {
     }
 
 
-    const id = getNextId(orders);
+    // generate an alphanumeric admin key and use it as the canonical order id
+    const generatedKey = generateAlphaKey(orders, 10);
 
     const newOrder = {
-      id,
+      id: generatedKey,
+      generatedKey,
       productName: productName || 'Unknown',
       price: Math.floor(price) || 0,
       originalPrice: Math.floor(originalPrice) || null,
@@ -90,7 +104,8 @@ export async function POST(req: Request) {
 
         const created = await prisma.order.create({
           data: {
-            // let DB generate id if it wants; cast to string below
+            // explicitly set id to generatedKey so DB uses same key
+            id: generatedKey,
             productName: newOrder.productName,
             price: newOrder.price,
             quantity: newOrder.quantity,
@@ -106,12 +121,11 @@ export async function POST(req: Request) {
         });
 
         // Build a file-friendly order using DB id (coerce to numeric string if possible)
-        const numId = Number(created.id);
-        const dbIdStr = !isNaN(numId) ? String(numId) : getNextId(orders);
         const createdAtStr = formatDateForDisplay(created.createdAt || new Date());
         const fileOrder = {
           ...newOrder,
-          id: dbIdStr,
+          id: generatedKey,
+          generatedKey: newOrder.generatedKey,
           createdAt: createdAtStr,
         };
 
@@ -131,7 +145,7 @@ export async function POST(req: Request) {
           await prisma.$disconnect();
         } catch (e) {}
 
-        return NextResponse.json({ id: dbIdStr, message: 'Order saved to DB and file' }, { status: 201 });
+        return NextResponse.json({ id: generatedKey, generatedKey: newOrder.generatedKey, message: 'Order saved to DB and file' }, { status: 201 });
       } catch (dbErr) {
         console.error('Prisma save failed, falling back to file', dbErr);
         // continue to write to file below
@@ -150,7 +164,7 @@ export async function POST(req: Request) {
       await fs.writeFile(filePath, JSON.stringify(orders, null, 2), 'utf8');
     }
 
-    return NextResponse.json({ id, message: 'Order saved locally' }, { status: 201 });
+    return NextResponse.json({ id: generatedKey, generatedKey: newOrder.generatedKey, message: 'Order saved locally' }, { status: 201 });
   } catch (error) {
     console.error('Create order error', error);
     return NextResponse.json({ message: 'Server error' }, { status: 500 });
